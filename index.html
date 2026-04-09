@@ -182,13 +182,27 @@ function sortPlayersForDisplay(){
 }
 function renderInputs(){
   const container = document.getElementById('playerInputs');
-  const orderedPlayers = sortPlayersForDisplay();
+  const currentPlaces = getEnteredPlaces();
+  const loadedMap = {};
+  players.forEach(player=>{
+    const existing = document.getElementById(`place-${cssSafe(player)}`);
+    loadedMap[player] = !!(existing && existing.classList.contains('loaded'));
+  });
+  const orderedPlayers = [...players].sort((a,b)=>{
+    const pa = currentPlaces[a];
+    const pb = currentPlaces[b];
+    const aBlank = !(pa > 0);
+    const bBlank = !(pb > 0);
+    if (aBlank && bBlank) return a.localeCompare(b);
+    if (aBlank) return 1;
+    if (bBlank) return -1;
+    if (pa !== pb) return pa - pb;
+    return a.localeCompare(b);
+  });
+
   container.innerHTML = '<div class="head">Golfer</div><div class="head">Place</div><div class="head">% Taken</div>';
   orderedPlayers.forEach(player=>{
-    const currentPlaces = getEnteredPlaces();
     const currentValue = currentPlaces[player] ? String(currentPlaces[player]) : '';
-    const existing = document.getElementById(`place-${cssSafe(player)}`);
-    const wasLoaded = existing && existing.classList.contains('loaded');
 
     const name = document.createElement('div');
     name.className = 'player-name';
@@ -198,7 +212,7 @@ function renderInputs(){
     input.type = 'number';
     input.min = '1';
     input.step = '1';
-    input.className = 'place-input' + (wasLoaded ? ' loaded' : '');
+    input.className = 'place-input' + (loadedMap[player] ? ' loaded' : '');
     input.id = `place-${cssSafe(player)}`;
     input.placeholder = '—';
     input.value = currentValue;
