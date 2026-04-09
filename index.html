@@ -166,16 +166,54 @@ function renderParticipants(){
     container.appendChild(row);
   });
 }
+function sortPlayersForDisplay(){
+  const places = getEnteredPlaces();
+  return [...players].sort((a,b)=>{
+    const pa = places[a];
+    const pb = places[b];
+    const aBlank = !(pa > 0);
+    const bBlank = !(pb > 0);
+    if (aBlank && bBlank) return a.localeCompare(b);
+    if (aBlank) return 1;
+    if (bBlank) return -1;
+    if (pa !== pb) return pa - pb;
+    return a.localeCompare(b);
+  });
+}
 function renderInputs(){
   const container = document.getElementById('playerInputs');
+  const orderedPlayers = sortPlayersForDisplay();
   container.innerHTML = '<div class="head">Golfer</div><div class="head">Place</div><div class="head">% Taken</div>';
-  players.forEach(player=>{
-    const name = document.createElement('div'); name.className = 'player-name'; name.textContent = player;
+  orderedPlayers.forEach(player=>{
+    const currentPlaces = getEnteredPlaces();
+    const currentValue = currentPlaces[player] ? String(currentPlaces[player]) : '';
+    const existing = document.getElementById(`place-${cssSafe(player)}`);
+    const wasLoaded = existing && existing.classList.contains('loaded');
+
+    const name = document.createElement('div');
+    name.className = 'player-name';
+    name.textContent = player;
+
     const input = document.createElement('input');
-    input.type = 'number'; input.min = '1'; input.step = '1'; input.className = 'place-input'; input.id = `place-${cssSafe(player)}`; input.placeholder = '—';
-    input.addEventListener('change', renderParticipants);
-    const pct = document.createElement('div'); pct.className = 'player-pct'; pct.textContent = `${pickPct[player]}%`;
-    container.appendChild(name); container.appendChild(input); container.appendChild(pct);
+    input.type = 'number';
+    input.min = '1';
+    input.step = '1';
+    input.className = 'place-input' + (wasLoaded ? ' loaded' : '');
+    input.id = `place-${cssSafe(player)}`;
+    input.placeholder = '—';
+    input.value = currentValue;
+    input.addEventListener('change', ()=>{
+      renderInputs();
+      renderParticipants();
+    });
+
+    const pct = document.createElement('div');
+    pct.className = 'player-pct';
+    pct.textContent = `${pickPct[player]}%`;
+
+    container.appendChild(name);
+    container.appendChild(input);
+    container.appendChild(pct);
   });
 }
 function renderPayoutTable(){
@@ -227,11 +265,11 @@ function applyPlaces(foundMap){
     if(Object.prototype.hasOwnProperty.call(foundMap, player)){
       el.value = String(foundMap[player]);
       el.classList.add('loaded');
-      el.dispatchEvent(new Event('change', {bubbles:true}));
     } else {
       el.value = '';
     }
   });
+  renderInputs();
 }
 
 async function loadLeaderboardFile(){
