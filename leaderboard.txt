@@ -1,16 +1,16 @@
-T1 Rory McIlroy
-T3 Patrick Reed
-T3 Justin Rose
-T7 Xander Schauffele
-T7 Scottie Scheffler
-T13 Tommy Fleetwood
-T21 Hideki Matsuyama
-T30 Akshay Bhatia
-T30 Cameron Young
-T30 Ludvig Aberg
-T44 Matt Fitzpatrick
-T44 Corey Connors
-T51 Robert MacIntyre
-T60 Bryson DeChambeau
-T60 Jon Rahm
-T70 Min Woo Lee
+T1 McIlroy
+T3 Reed
+T6 Schauffele
+T6 Rose
+T6 Scheffler
+T10 Fleetwood
+T17 Matsuyama
+T33 Bhatia
+T33 Young
+T40 Fitzpatrick
+T40 Aberg
+T48 Connors
+T56 DeChambeau
+T73 Min Woo Lee
+T73 Rahm
+T82 MacIntyre
