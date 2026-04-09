@@ -78,10 +78,11 @@ T3 Ludvig Aberg
 4 Xander Schauffele"></textarea>
 <div class="controls">
 <button id="applyLeaderboardBtn" type="button">Apply Leaderboard</button>
+<button class="ghost" id="loadFileBtn" type="button">Load leaderboard.txt</button>
 <button class="ghost" id="sampleLeaderboardBtn" type="button">Load Sample</button>
 <button class="secondary" id="clearLeaderboardBtn" type="button">Clear Box</button>
 </div>
-<div class="small">The parser looks for a place number and a player name on each line. It ignores golfers who are not in your pool. Ties like T3 or 3 are both treated as place 3.</div>
+<div class="small">The parser looks for a place number and a player name on each line. It ignores golfers who are not in your pool. Ties like T3 or 3 are both treated as place 3. You can also auto-load a file named leaderboard.txt from the same GitHub Pages folder.</div>
 <div class="examples">Sample formats:
 1 Scottie Scheffler
 2 Rory McIlroy
@@ -235,11 +236,29 @@ T3 Ludvig Aberg
 document.getElementById('parseStatus').textContent='Sample leaderboard loaded. Click Apply Leaderboard to populate places.';
 }
 function clearLeaderboardBox(){ document.getElementById('leaderboardText').value=''; document.getElementById('parseStatus').textContent='Leaderboard text box cleared.'; }
+async function loadLeaderboardFile(autoApply=true){
+  const status = document.getElementById('parseStatus');
+  try{
+    status.textContent = 'Loading leaderboard.txt...';
+    const response = await fetch('leaderboard.txt', {cache:'no-store'});
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text = await response.text();
+    document.getElementById('leaderboardText').value = text.trim();
+    status.textContent = 'Loaded leaderboard.txt.';
+    if(autoApply){
+      parseLeaderboardText();
+      status.textContent = status.textContent + ' File applied.';
+    }
+  }catch(err){
+    status.textContent = 'Could not load leaderboard.txt. Make sure it is uploaded to the same GitHub Pages folder as index.html.';
+  }
+}
 document.getElementById('applyLeaderboardBtn').addEventListener('click', parseLeaderboardText);
+document.getElementById('loadFileBtn').addEventListener('click', ()=>loadLeaderboardFile(true));
 document.getElementById('sampleLeaderboardBtn').addEventListener('click', loadSampleLeaderboard);
 document.getElementById('clearLeaderboardBtn').addEventListener('click', clearLeaderboardBox);
 document.getElementById('calcBtn').addEventListener('click', calculate);
 document.getElementById('resetBtn').addEventListener('click', clearPlaces);
-renderInputs(); renderPayoutTable(); renderParticipants();
+renderInputs(); renderPayoutTable(); renderParticipants(); loadLeaderboardFile(true);
 </script>
 </body></html>
