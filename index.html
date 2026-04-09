@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Masters Pool Prize Estimator</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fff;--ink:#1d2a22;--muted:#5d6b63;--accent:#1c6b43;--line:#d9d3c7;--soft:#f8f7f3}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1400px;margin:0 auto;padding:16px}
+h1{margin:0 0 8px;line-height:1.1}.subtitle{color:var(--muted);margin-bottom:18px;line-height:1.45;font-size:15px}
+.grid{display:grid;grid-template-columns:1.45fr 1fr;gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}
+.card h2{margin:0;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--soft);font-size:20px;line-height:1.2}
+.participants-note{padding:10px 18px 0;color:var(--muted);font-size:12px}.participants{padding:10px 14px 18px}
+.participant{display:grid;grid-template-columns:1.1fr 2.3fr .75fr 1fr;gap:12px;padding:12px 8px;border-bottom:1px solid #ece7dd;align-items:start}
+.participant:last-child{border-bottom:0}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.p-name{font-weight:700}.p-golfers{line-height:1.4}.p-tb,.p-money{text-align:right;white-space:nowrap}
+.money-value{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}.right-col{display:grid;gap:18px}
+.inputs-wrap{padding:16px 18px 18px}.players-grid{display:grid;grid-template-columns:minmax(0,1fr) 72px 88px;gap:8px 10px;align-items:center}
+.players-grid .head{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-bottom:6px;border-bottom:1px solid #ece7dd;position:sticky;top:0;background:white;z-index:2}
+.player-name,.player-pct{padding:9px 0;border-bottom:1px dashed #ece7dd}.player-name{min-width:0;word-break:break-word}.player-pct{text-align:right;font-weight:700;color:var(--muted)}
+input.place-input,textarea,.payout-input{width:100%;padding:10px 8px;border:1px solid #cfc8bb;border-radius:8px;font-size:16px;min-height:42px;font-family:inherit}
+textarea{min-height:180px;resize:vertical}
+.payout-input{text-align:right;min-height:auto;padding:8px 8px}
+.controls{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+button{border:0;background:var(--accent);color:white;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;min-height:44px}
+button.secondary{background:#7d8b83}button.ghost{background:#dfe7e1;color:#193025}
+.small{color:var(--muted);font-size:13px;line-height:1.45;margin-top:10px}.top-note{padding:0 18px 18px;color:var(--muted);font-size:13px;line-height:1.45}
+.table-wrap{padding:0 18px 18px;max-height:520px;overflow:auto}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid #ece7dd;padding:10px 12px;text-align:left;vertical-align:middle}th:last-child,td:last-child{text-align:right}
+.status-box,.examples{margin-top:10px;padding:10px 12px;background:#f8f7f3;border:1px solid #e6e0d4;border-radius:8px;color:var(--muted);font-size:13px;line-height:1.4}
+.examples{font-size:12px;white-space:pre-wrap}
+@media (max-width:1100px){.grid{grid-template-columns:1fr}}
+@media (max-width:760px){
+.wrap{padding:10px} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}
+.participants{padding:4px 8px 10px}.participants-note{padding:8px 12px 0}.participant{grid-template-columns:1fr;gap:6px;padding:12px 6px}.p-tb,.p-money{text-align:left}
+.inputs-wrap{padding:12px}.players-grid{grid-template-columns:minmax(0,1fr) 58px 70px;gap:7px 8px}.players-grid .head{font-size:10px;letter-spacing:.03em}
+.player-name,.player-pct{font-size:13px;padding:8px 0} input.place-input,textarea,.payout-input{font-size:16px;min-height:40px;padding:8px 6px}
+.controls{position:sticky;bottom:0;background:linear-gradient(to top,rgba(255,255,255,.98),rgba(255,255,255,.94));padding-top:10px;padding-bottom:max(10px, env(safe-area-inset-bottom));margin-top:12px}
+button{flex:1 1 100%;width:100%;font-size:15px}.table-wrap{max-height:300px}}
+@media (max-width:430px){.wrap{padding:8px}h1{font-size:22px}.subtitle{font-size:13px}.players-grid{grid-template-columns:minmax(0,1fr) 52px 64px;gap:6px 7px}.player-name,.player-pct{font-size:12px}.label{font-size:11px}.participant{padding:10px 4px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Masters Pool Prize Estimator</h1>
+<div class="subtitle">Paste leaderboard text or enter places manually. Then click <strong>Calculate Estimated Prize Money</strong>. The page totals estimated Masters prize money for each participant’s five golfers, sorts participants from highest to lowest estimated total, and shows each golfer’s pick popularity percentage.</div>
+<div class="grid">
+<section class="card">
+<h2>Pool Participants</h2>
+<div class="participants-note">After you click Calculate, the list reorders from highest estimated total prize money to lowest.</div>
+<div class="participants" id="participants"></div>
+</section>
+<div class="right-col">
+<section class="card">
+<h2>Golfer Place Input</h2>
+<div class="inputs-wrap">
+<div class="players-grid" id="playerInputs"></div>
+<div class="controls">
+<button id="calcBtn" type="button">Calculate Estimated Prize Money</button>
+<button class="secondary" id="resetBtn" type="button">Clear Places</button>
+</div>
+<div class="small">Leave a golfer blank for $0. Use numeric finishing places only. Tiebreaker values are shown for reference only and are not included in the money calculation.</div>
+</div>
+</section>
+
+<section class="card">
+<h2>Paste Leaderboard Text</h2>
+<div class="inputs-wrap">
+<textarea id="leaderboardText" placeholder="Paste leaderboard text here...
+
+Examples:
+1 Scottie Scheffler
+2 Rory McIlroy
+T3 Ludvig Aberg
+4 Xander Schauffele"></textarea>
+<div class="controls">
+<button id="applyLeaderboardBtn" type="button">Apply Leaderboard</button>
+<button class="ghost" id="sampleLeaderboardBtn" type="button">Load Sample</button>
+<button class="secondary" id="clearLeaderboardBtn" type="button">Clear Box</button>
+</div>
+<div class="small">The parser looks for a place number and a player name on each line. It ignores golfers who are not in your pool. Ties like T3 or 3 are both treated as place 3.</div>
+<div class="examples">Sample formats:
+1 Scottie Scheffler
+2 Rory McIlroy
+T3 Ludvig Aberg
+4 Xander Schauffele
+5 Jon Rahm
+
+or copied rows that include place + name on the same line.</div>
+<div class="status-box" id="parseStatus">No leaderboard pasted yet.</div>
+</div>
+</section>
+
+<section class="card">
+<h2>Estimated Prize Money by Place</h2>
+<div class="top-note">These payout amounts start prefilled with the current estimate, but you can edit any value before calculating. Places not listed here return $0.</div>
+<div class="table-wrap"><table><thead><tr><th>Place</th><th>Editable Prize</th></tr></thead><tbody id="payoutTable"></tbody></table></div>
+</section>
+</div></div></div>
+<script>
+const participants = [{"name": "Domski", "tiebreaker": -10, "golfers": ["Scheffler", "McIlroy", "Rahm", "Aberg", "Matsuyama"]}, {"name": "DiPaolo", "tiebreaker": -14, "golfers": ["Scheffler", "McIlroy", "Rahm", "Schauffele", "Bhatia"]}, {"name": "Enright", "tiebreaker": -10, "golfers": ["Scheffler", "Aberg", "Rahm", "Schauffele", "Fitzpatrick"]}, {"name": "Morrison", "tiebreaker": -12, "golfers": ["Scheffler", "Rose", "Rahm", "Schauffele", "Fleetwood"]}, {"name": "McGowan", "tiebreaker": -11, "golfers": ["Scheffler", "Aberg", "Rahm", "Fitzpatrick", "DeChambeau"]}, {"name": "Sandman", "tiebreaker": -12, "golfers": ["Scheffler", "McIlroy", "Rahm", "Young", "DeChambeau"]}, {"name": "Guccione", "tiebreaker": -13, "golfers": ["Scheffler", "McIlroy", "Schauffele", "Aberg", "Min Woo Lee"]}, {"name": "Rozynak", "tiebreaker": -11, "golfers": ["Scheffler", "Schauffele", "Fleetwood", "Rose", "Bhatia"]}, {"name": "Welch", "tiebreaker": -13, "golfers": ["Scheffler", "Rahm", "DeChambeau", "Young", "Schauffele"]}, {"name": "Picardi", "tiebreaker": -9, "golfers": ["Scheffler", "Rahm", "McIlroy", "Aberg", "DeChambeau"]}, {"name": "Lawrence", "tiebreaker": -12, "golfers": ["Scheffler", "Rahm", "Aberg", "Schauffele", "Young"]}, {"name": "O'Rourke", "tiebreaker": -11, "golfers": ["Rahm", "Schauffele", "Reed", "Connors", "Fleetwood"]}, {"name": "Malinowski", "tiebreaker": -9, "golfers": ["Scheffler", "Rahm", "Aberg", "DeChambeau", "Schauffele"]}, {"name": "Smith", "tiebreaker": -10, "golfers": ["Scheffler", "Rahm", "McIlroy", "Rose", "MacIntyre"]}, {"name": "Susi", "tiebreaker": -11, "golfers": ["Scheffler", "Schauffele", "Rahm", "Rose", "Fleetwood"]}, {"name": "Colgan", "tiebreaker": -13, "golfers": ["Scheffler", "Aberg", "Fleetwood", "Fitzpatrick", "Young"]}, {"name": "McIntire", "tiebreaker": -13, "golfers": ["Scheffler", "Rahm", "DeChambeau", "McIlroy", "Schauffele"]}];
+const defaultPayouts = {"1": 3420000, "2": 2052000, "3": 1292000, "4": 912000, "5": 760000, "6": 684000, "7": 636500, "8": 589000, "9": 551000, "10": 513000, "11": 475000, "12": 437000, "13": 399000, "14": 361000, "15": 342000, "16": 323000, "17": 304000, "18": 285000, "19": 266000, "20": 247000, "21": 228000, "22": 212800, "23": 197600, "24": 182400, "25": 167200, "26": 152000, "27": 146300, "28": 140600, "29": 134900, "30": 129200, "31": 123500, "32": 117800, "33": 112100, "34": 107350, "35": 102600, "36": 97850, "37": 93100, "38": 89300, "39": 85500, "40": 81700, "41": 77900, "42": 74100, "43": 70300, "44": 66500, "45": 62700, "46": 58900, "47": 55100, "48": 52060, "49": 49400, "50": 47880};
+const players = ["Aberg", "Bhatia", "Connors", "DeChambeau", "Fitzpatrick", "Fleetwood", "MacIntyre", "Matsuyama", "McIlroy", "Min Woo Lee", "Rahm", "Reed", "Rose", "Schauffele", "Scheffler", "Young"];
+const pickPct = {"Aberg": 47, "Bhatia": 12, "Connors": 6, "DeChambeau": 35, "Fitzpatrick": 18, "Fleetwood": 29, "MacIntyre": 6, "Matsuyama": 6, "McIlroy": 41, "Min Woo Lee": 6, "Rahm": 82, "Reed": 6, "Rose": 24, "Schauffele": 65, "Scheffler": 94, "Young": 24};
+const playerAliases = {
+"scheffler":"Scheffler","scottie scheffler":"Scheffler",
+"mcilroy":"McIlroy","rory mcilroy":"McIlroy",
+"rahm":"Rahm","jon rahm":"Rahm",
+"aberg":"Aberg","åberg":"Aberg","ludvig aberg":"Aberg","ludvig åberg":"Aberg",
+"schauffele":"Schauffele","xander schauffele":"Schauffele",
+"matsuyama":"Matsuyama","hideki matsuyama":"Matsuyama",
+"bhatia":"Bhatia","akshay bhatia":"Bhatia",
+"rose":"Rose","justin rose":"Rose",
+"fleetwood":"Fleetwood","tommy fleetwood":"Fleetwood",
+"fitzpatrick":"Fitzpatrick","matt fitzpatrick":"Fitzpatrick",
+"dechambeau":"DeChambeau","bryson dechambeau":"DeChambeau",
+"young":"Young","cameron young":"Young",
+"min woo lee":"Min Woo Lee","woo lee":"Min Woo Lee",
+"reed":"Reed","patrick reed":"Reed",
+"connors":"Connors","corey connors":"Connors",
+"macintyre":"MacIntyre","robert macintyre":"MacIntyre","bob macintyre":"MacIntyre"
+};
+function fmtMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v||0)}
+function fmtPlainNumber(v){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(v||0)}
+function parseMoneyInput(value){
+  const cleaned = String(value).replace(/[^0-9.-]/g,'');
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? num : 0;
+}
+function cssSafe(t){return t.replace(/[^a-zA-Z0-9_-]/g,'_')}
+function normalizeName(t){return t.toLowerCase().replace(/[.,]/g,' ').replace(/\(.*?\)/g,' ').replace(/\s+/g,' ').trim()}
+function resolvePlayerName(raw){
+  const n=normalizeName(raw);
+  if(playerAliases[n]) return playerAliases[n];
+  for(const [alias,canonical] of Object.entries(playerAliases)){ if(n.includes(alias)) return canonical; }
+  return null;
+}
+function getCurrentPayouts(){
+  const map = {};
+  Object.keys(defaultPayouts).forEach(key=>{
+    const el = document.getElementById(`payout-${key}`);
+    map[key] = el ? parseMoneyInput(el.value) : Number(defaultPayouts[key]);
+  });
+  return map;
+}
+function getEnteredPlaces(){
+  const map={};
+  players.forEach(player=>{ const el=document.getElementById(`place-${cssSafe(player)}`); if(!el) return; const value=el.value.trim(); if(value!=='') map[player]=Number(value); });
+  return map;
+}
+function computeParticipantTotals(){
+  const places=getEnteredPlaces();
+  const payouts=getCurrentPayouts();
+  return participants.map(p=>{
+    const total=p.golfers.reduce((sum,golfer)=>{ const place=places[golfer]; if(!place||!payouts[place]) return sum; return sum+payouts[place]; },0);
+    return {...p,total};
+  }).sort((a,b)=>{ if(b.total!==a.total) return b.total-a.total; return a.name.localeCompare(b.name); });
+}
+function renderParticipants(){
+  const container=document.getElementById('participants');
+  const ranked=computeParticipantTotals();
+  container.innerHTML='';
+  ranked.forEach(p=>{
+    const row=document.createElement('div');
+    row.className='participant';
+    row.innerHTML=`<div><div class="label">Participant</div><div class="p-name">${p.name}</div></div>
+    <div><div class="label">5 Golfers</div><div class="p-golfers">${p.golfers.join(', ')}</div></div>
+    <div class="p-tb"><div class="label">Tiebreaker</div><div>${p.tiebreaker}</div></div>
+    <div class="p-money"><div class="label">Estimated Total Prize</div><div class="money-value">${fmtMoney(p.total)}</div></div>`;
+    container.appendChild(row);
+  });
+}
+function renderInputs(){
+  const container=document.getElementById('playerInputs');
+  container.innerHTML='<div class="head">Golfer</div><div class="head">Place</div><div class="head">% Taken</div>';
+  players.forEach(player=>{
+    const name=document.createElement('div'); name.className='player-name'; name.textContent=player;
+    const input=document.createElement('input'); input.type='number'; input.min='1'; input.step='1'; input.className='place-input'; input.id=`place-${cssSafe(player)}`; input.placeholder='—';
+    const pct=document.createElement('div'); pct.className='player-pct'; pct.textContent=`${pickPct[player]}%`;
+    container.appendChild(name); container.appendChild(input); container.appendChild(pct);
+  });
+}
+function renderPayoutTable(){
+  const body=document.getElementById('payoutTable'); body.innerHTML='';
+  Object.keys(defaultPayouts).map(Number).sort((a,b)=>a-b).forEach(place=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${place}</td><td><input class="payout-input" id="payout-${place}" type="text" value="${fmtPlainNumber(defaultPayouts[place])}"></td>`;
+    body.appendChild(tr);
+  });
+}
+function calculate(){ renderParticipants(); }
+function clearPlaces(){ players.forEach(player=>{ const el=document.getElementById(`place-${cssSafe(player)}`); if(el) el.value=''; }); renderParticipants(); }
+function applyParsedPlaces(foundMap, unmatchedLines){
+  let filled=0;
+  Object.entries(foundMap).forEach(([player,place])=>{ const el=document.getElementById(`place-${cssSafe(player)}`); if(el){ el.value=place; filled+=1; }});
+  renderParticipants();
+  let msg=`Filled ${filled} pool golfer place${filled===1?'':'s'} from pasted leaderboard text.`;
+  if(unmatchedLines.length){ msg += ` Ignored ${unmatchedLines.length} line${unmatchedLines.length===1?'':'s'} that did not match a pool golfer.`; }
+  document.getElementById('parseStatus').textContent=msg;
+}
+function parseLeaderboardText(){
+  const text=document.getElementById('leaderboardText').value;
+  const lines=text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const foundMap={}, unmatched=[];
+  lines.forEach(line=>{
+    const match=line.match(/(?:^|\s)(?:T)?(\d{1,2})(?:\s+|$)(.+)/i);
+    if(!match){ unmatched.push(line); return; }
+    const place=Number(match[1]);
+    let remainder=match[2].replace(/^[\-–—:]+/,'').replace(/\s*E$|\s*[+-]\d+$/i,'').trim();
+    const resolved=resolvePlayerName(remainder);
+    if(resolved && players.includes(resolved)){ if(!foundMap[resolved]) foundMap[resolved]=place; } else { unmatched.push(line); }
+  });
+  applyParsedPlaces(foundMap, unmatched);
+}
+function loadSampleLeaderboard(){
+document.getElementById('leaderboardText').value=`1 Scottie Scheffler
+2 Rory McIlroy
+T3 Ludvig Aberg
+4 Xander Schauffele
+5 Jon Rahm
+6 Bryson DeChambeau
+7 Tommy Fleetwood
+8 Justin Rose
+9 Akshay Bhatia
+10 Cameron Young
+11 Matt Fitzpatrick
+12 Hideki Matsuyama
+13 Min Woo Lee
+14 Patrick Reed
+15 Corey Connors
+16 Robert MacIntyre`;
+document.getElementById('parseStatus').textContent='Sample leaderboard loaded. Click Apply Leaderboard to populate places.';
+}
+function clearLeaderboardBox(){ document.getElementById('leaderboardText').value=''; document.getElementById('parseStatus').textContent='Leaderboard text box cleared.'; }
+document.getElementById('applyLeaderboardBtn').addEventListener('click', parseLeaderboardText);
+document.getElementById('sampleLeaderboardBtn').addEventListener('click', loadSampleLeaderboard);
+document.getElementById('clearLeaderboardBtn').addEventListener('click', clearLeaderboardBox);
+document.getElementById('calcBtn').addEventListener('click', calculate);
+document.getElementById('resetBtn').addEventListener('click', clearPlaces);
+renderInputs(); renderPayoutTable(); renderParticipants();
+</script>
+</body></html>
