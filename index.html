@@ -7,7 +7,7 @@
 <style>
 :root{--bg:#f5f1e8;--card:#fff;--ink:#1d2a22;--muted:#5d6b63;--accent:#1c6b43;--line:#d9d3c7;--soft:#f8f7f3}
 *{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
 .wrap{max-width:1400px;margin:0 auto;padding:16px}
 h1{margin:0 0 8px;line-height:1.1}.subtitle{color:var(--muted);margin-bottom:18px;line-height:1.45;font-size:15px}
 .grid{display:grid;grid-template-columns:1.45fr 1fr;gap:18px;align-items:start}
@@ -33,13 +33,13 @@ th,td{border-bottom:1px solid #ece7dd;padding:10px 12px;text-align:left;vertical
 .status-box{margin-top:10px;padding:10px 12px;background:#f8f7f3;border:1px solid #e6e0d4;border-radius:8px;color:var(--muted);font-size:13px;line-height:1.4}
 @media (max-width:1100px){.grid{grid-template-columns:1fr}}
 @media (max-width:760px){
-.wrap{padding:10px} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}
-.participants{padding:4px 8px 10px}.participants-note{padding:8px 12px 0}.participant{grid-template-columns:1fr;gap:6px;padding:12px 6px}.p-tb,.p-money{text-align:left}
-.inputs-wrap{padding:12px}.players-grid{grid-template-columns:minmax(0,1fr) 64px 70px;gap:7px 8px}.players-grid .head{font-size:10px;letter-spacing:.03em}
-.player-name,.player-pct{font-size:13px;padding:8px 0} input.place-input,.payout-input{font-size:16px;min-height:40px;padding:8px 6px}
-.controls{position:sticky;bottom:0;background:linear-gradient(to top,rgba(255,255,255,.98),rgba(255,255,255,.94));padding-top:10px;padding-bottom:max(10px, env(safe-area-inset-bottom));margin-top:12px}
-button{flex:1 1 100%;width:100%;font-size:15px}.table-wrap{max-height:300px}}
-@media (max-width:430px){.wrap{padding:8px}h1{font-size:22px}.subtitle{font-size:13px}.players-grid{grid-template-columns:minmax(0,1fr) 56px 64px;gap:6px 7px}.player-name,.player-pct{font-size:12px}.label{font-size:11px}.participant{padding:10px 4px}}
+.wrap{padding:10px;max-width:100%} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.grid{display:flex;flex-direction:column}.right-col{order:-1}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}
+.participants{padding:6px 8px 10px}.participants-note{padding:8px 12px 0}.participant{grid-template-columns:1fr;gap:8px;padding:12px 8px}.p-tb,.p-money{text-align:left;white-space:normal}
+.inputs-wrap{padding:12px}.players-grid{grid-template-columns:minmax(0,1fr) 68px 62px;gap:7px 8px}.players-grid .head{font-size:10px;letter-spacing:.03em;position:static;padding-bottom:5px}
+.player-name,.player-pct{font-size:13px;padding:8px 0}.player-pct{align-self:center} input.place-input,.payout-input{font-size:16px;min-height:42px;padding:8px 6px}
+.controls{position:sticky;bottom:0;background:linear-gradient(to top,rgba(255,255,255,.98),rgba(255,255,255,.94));padding-top:10px;padding-bottom:max(10px, env(safe-area-inset-bottom));margin-top:12px;border-top:1px solid #ece7dd}
+button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font-size:12px}.table-wrap{max-height:280px;padding:0 12px 12px}th,td{padding:9px 8px;font-size:14px}}
+@media (max-width:430px){.wrap{padding:8px}h1{font-size:22px}.subtitle{font-size:13px}.players-grid{grid-template-columns:minmax(0,1fr) 60px 54px;gap:6px 7px}.player-name,.player-pct{font-size:12px}.label{font-size:11px}.participant{padding:10px 4px}.money-value{font-size:18px}th,td{font-size:13px}}
 </style>
 </head>
 <body>
@@ -48,7 +48,7 @@ button{flex:1 1 100%;width:100%;font-size:15px}.table-wrap{max-height:300px}}
 <div class="subtitle">You can manually change any golfer place or payout amount and recalculate.</div>
 <div class="grid">
 <section class="card">
-<h2>Pool Participants</h2>
+<h2>The Contenders</h2>
 <div class="participants-note">After loading, the list is automatically sorted from highest estimated total prize money to lowest.</div>
 <div class="participants" id="participants"></div>
 </section>
@@ -63,7 +63,7 @@ button{flex:1 1 100%;width:100%;font-size:15px}.table-wrap{max-height:300px}}
 <button id="calcBtn" type="button">Recalculate</button>
 <button class="secondary" id="resetBtn" type="button">Clear Places</button>
 </div>
-<div class="small">You can manually overwrite any golfer place here. Tiebreakers are shown for reference only and are not included in the money calculation.</div>
+<div class="small">You can manually overwrite any golfer place here.</div>
 <div class="status-box" id="statusBox">Loading leaderboard.txt...</div>
 </div>
 </section>
@@ -114,6 +114,8 @@ function normalizeName(t){return t.toLowerCase().replace(/[.,]/g,' ').replace(/\
 function resolvePlayerName(raw){
   const n = normalizeName(raw);
   if(playerAliases[n]) return playerAliases[n];
+  const directPlayerMatch = players.find(p => normalizeName(p) === n);
+  if(directPlayerMatch) return directPlayerMatch;
   for(const [alias,canonical] of Object.entries(playerAliases)){ if(n.includes(alias)) return canonical; }
   return null;
 }
@@ -162,7 +164,7 @@ function renderParticipants(){
   ranked.forEach(p=>{
     const row = document.createElement('div');
     row.className = 'participant';
-    row.innerHTML = `<div><div class="label">Participant</div><div class="p-name">${p.name}</div></div>
+    row.innerHTML = `<div><div class="p-name">${p.name}</div></div>
     <div><div class="label">5 Golfers</div><div class="p-golfers">${p.golfers.join(', ')}</div></div>
     <div class="p-tb"><div class="label">Tiebreaker</div><div>${p.tiebreaker}</div></div>
     <div class="p-money"><div class="label">Estimated Total Prize</div><div class="money-value">${fmtMoney(p.total)}</div></div>`;
