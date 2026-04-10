@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>Masters Pool Prize Estimator</title>
+<title>McGowan Masters Pool Prize Estimator</title>
 <style>
 :root{--bg:#f5f1e8;--card:#fff;--ink:#1d2a22;--muted:#5d6b63;--accent:#1c6b43;--line:#d9d3c7;--soft:#f8f7f3}
 *{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
@@ -44,8 +44,8 @@ button{flex:1 1 100%;width:100%;font-size:15px}.table-wrap{max-height:300px}}
 </head>
 <body>
 <div class="wrap">
-<h1>Masters Pool Prize Estimator</h1>
-<div class="subtitle">This version auto-loads <strong>leaderboard.txt</strong> on page open, auto-applies the golfer places, and auto-calculates totals. You can still manually change any golfer place or payout amount and recalculate.</div>
+<h1>McGowan Masters Pool Prize Estimator</h1>
+<div class="subtitle">You can manually change any golfer place or payout amount and recalculate.</div>
 <div class="grid">
 <section class="card">
 <h2>Pool Participants</h2>
@@ -133,7 +133,10 @@ function getEnteredPlaces(){
     const el = document.getElementById(`place-${cssSafe(player)}`);
     if(!el) return;
     const value = el.value.trim();
-    if(value !== '') map[player] = Number(value);
+    if(value !== '') {
+      const num = Number(value);
+      if(Number.isFinite(num) && num > 0) map[player] = Math.trunc(num);
+    }
   });
   return map;
 }
@@ -246,8 +249,12 @@ function renderPayoutTable(){
 function clearPlaces(){
   players.forEach(player=>{
     const el = document.getElementById(`place-${cssSafe(player)}`);
-    if(el) el.value = '';
+    if(el){
+      el.value = '';
+      el.classList.remove('loaded');
+    }
   });
+  renderInputs();
   renderParticipants();
   getStatusEl().textContent = 'Golfer places cleared.';
 }
