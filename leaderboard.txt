@@ -1,16 +1,16 @@
-T1 McIlroy
-T3 Reed
-T6 Schauffele
-T6 Rose
-T6 Scheffler
-T10 Fleetwood
-T17 Matsuyama
-T33 Bhatia
-T33 Young
-T40 Fitzpatrick
-T40 Aberg
-T48 Connors
-T56 DeChambeau
-T73 Min Woo Lee
-T73 Rahm
-T82 MacIntyre
+1 McIlroy
+4 Reed
+12 Schauffele
+2 Rose
+20 Scheffler
+15 Fleetwood
+20 Matsuyama
+12 Bhatia
+20 Young
+44 Fitzpatrick
+21 Aberg
+T49 Connors
+56 DeChambeau
+84 Min Woo Lee
+49 Rahm
+67 MacIntyre
