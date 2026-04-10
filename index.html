@@ -267,7 +267,11 @@ function parseLeaderboardText(text){
     const match = line.match(/^T?(\d{1,2})\s+(.+)$/i);
     if(!match){ unmatched.push(line); return; }
     const place = Number(match[1]);
-    let remainder = match[2].replace(/^[\-–—:]+/,'').replace(/\s*E$|\s*[+-]\d+$/i,'').trim();
+    let remainder = match[2]
+      .replace(/^[\-–—:]+/,'')
+      .replace(/\s+E$/i,'')
+      .replace(/\s+[+-]\d+$/i,'')
+      .trim();
     const resolved = resolvePlayerName(remainder);
     if(resolved && players.includes(resolved)){
       foundMap[resolved] = place;
