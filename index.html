@@ -264,7 +264,7 @@ function parseLeaderboardText(text){
   const foundMap = {};
   const unmatched = [];
   lines.forEach(line=>{
-    const match = line.match(/(?:^|\s)(?:T)?(\d{1,2})(?:\s+|$)(.+)/i);
+    const match = line.match(/^T?(\d{1,2})\s+(.+)$/i);
     if(!match){ unmatched.push(line); return; }
     const place = Number(match[1]);
     let remainder = match[2].replace(/^[\-–—:]+/,'').replace(/\s*E$|\s*[+-]\d+$/i,'').trim();
