@@ -1,10 +1,9 @@
 1 McIlroy
 2 Reed
-16 Schauffele
 4 Rose
-25 Scheffler
+24 Scheffler
 4 Fleetwood
-13 Matsuyama
+16 Matsuyama
 60 Bhatia
 7 Young
 20 Fitzpatrick
@@ -14,3 +13,4 @@
 79 Min Woo Lee
 47 Rahm
 64 MacIntyre
+16 Schauffele
