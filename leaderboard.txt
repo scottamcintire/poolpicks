@@ -3,18 +3,18 @@
 # Accepted formats include: Scheffler = 1, McIlroy = T2, or T2 Rory McIlroy.
 # Leave a line blank after the equals sign until you know the place.
 
-Aberg = 96
-Bhatia = 5
-DeChambeau = 38
-M Fitzpatrick = 38
+Aberg = 68
+Bhatia = 49
+DeChambeau = 135
+M Fitzpatrick = 33
 Fleetwood = 68
 Gotterup = 68
-Henley = 38
-Hovland = 38
-McIlroy = 122
-Morikawa = 38
-Rahm = 14
-Rose = 38
-Schauffele = 5
-Scheffler = 38
-Young = 38
+Henley = 68
+Hovland = 105
+McIlroy = 105
+Morikawa = 15
+Rahm = 15
+Rose = 33
+Schauffele = 8
+Scheffler = 1
+Young = 49
