@@ -1,16 +1,20 @@
-1 McIlroy
-1 Young
-9 Reed
-5 Rose
-7 Scheffler
-15 Fleetwood
-15 Schauffele
-29 Matsuyama
-21 Fitzpatrick
-21 Aberg
-44 Connors
-48 Rahm
-64 MacIntyre
-60 Bhatia
-60 DeChambeau
-79 Min Woo Lee
+# McGowan's PGA Championship Pool - leaderboard.txt
+# Fill in each selected golfer's current finishing position/place.
+# Accepted formats include: Scheffler = 1, McIlroy = T2, or T2 Rory McIlroy.
+# Leave a line blank after the equals sign until you know the place.
+
+Aberg = 96
+Bhatia = 5
+DeChambeau = 38
+M Fitzpatrick = 38
+Fleetwood = 68
+Gotterup = 68
+Henley = 38
+Hovland = 38
+McIlroy = 122
+Morikawa = 38
+Rahm = 14
+Rose = 38
+Schauffele = 5
+Scheffler = 38
+Young = 38
