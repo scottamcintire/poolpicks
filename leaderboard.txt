@@ -2,6 +2,7 @@
 # Fill in each selected golfer's current finishing position/place.
 # Accepted formats include: Scheffler = 1, McIlroy = T2, or T2 Rory McIlroy.
 # Leave a line blank after the equals sign until you know the place.
+Updated: Thursday, 8:30 PM
 
 Aberg = 68
 Bhatia = 49

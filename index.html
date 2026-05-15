@@ -13,6 +13,8 @@ h1{margin:0 0 8px;line-height:1.1}.subtitle{color:var(--muted);margin-bottom:18p
 .grid{display:grid;grid-template-columns:1.45fr 1fr;gap:18px;align-items:start}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}
 .card h2{margin:0;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--soft);font-size:20px;line-height:1.2}
+.card-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.updated-stamp{font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;text-align:right}
 .participants-note{padding:10px 18px 0;color:var(--muted);font-size:12px}.participants{padding:10px 14px 18px}
 .participant{display:grid;grid-template-columns:1.1fr 2.3fr .75fr 1fr;gap:12px;padding:12px 8px;border-bottom:1px solid #ece7dd;align-items:start}
 .participant:last-child{border-bottom:0}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
@@ -33,7 +35,7 @@ th,td{border-bottom:1px solid #ece7dd;padding:10px 12px;text-align:left;vertical
 .status-box{margin-top:10px;padding:10px 12px;background:#f8f7f3;border:1px solid #e6e0d4;border-radius:8px;color:var(--muted);font-size:13px;line-height:1.4}
 @media (max-width:1100px){.grid{grid-template-columns:1fr}}
 @media (max-width:760px){
-.wrap{padding:10px;max-width:100%} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.grid{display:flex;flex-direction:column}.right-col{order:0}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}
+.wrap{padding:10px;max-width:100%} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.grid{display:flex;flex-direction:column}.right-col{order:0}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}.card-title{align-items:flex-start}.updated-stamp{font-size:13px;line-height:1.2;white-space:normal;max-width:52%}
 .participants{padding:6px 8px 10px}.participants-note{padding:8px 12px 0}.participant{grid-template-columns:1fr;gap:8px;padding:12px 8px}.p-tb,.p-money{text-align:left;white-space:normal}
 .inputs-wrap{padding:12px}.players-grid{grid-template-columns:minmax(0,1fr) 68px 62px;gap:7px 8px}.players-grid .head{font-size:10px;letter-spacing:.03em;position:static;padding-bottom:5px}
 .player-name,.player-pct{font-size:13px;padding:8px 0}.player-pct{align-self:center} input.place-input,.payout-input{font-size:16px;min-height:42px;padding:8px 6px}
@@ -48,7 +50,7 @@ button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font
 <div class="subtitle">Track this weekend’s PGA Championship pool. You can load leaderboard.txt, manually change any golfer place or payout amount, and recalculate.</div>
 <div class="grid">
 <section class="card">
-<h2>The Contenders</h2>
+<h2 class="card-title"><span>The Contenders</span><span class="updated-stamp" id="updatedStamp"></span></h2>
 <div class="participants-note">After loading, the list is automatically sorted from highest estimated total prize money to lowest.</div>
 <div class="participants" id="participants"></div>
 </section>
@@ -59,8 +61,8 @@ button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font
 <div class="inputs-wrap">
 <div class="players-grid" id="playerInputs"></div>
 <div class="controls">
-<button id="refreshBtn" type="button">Refresh leaderboard.txt</button>
 <button id="calcBtn" type="button">Recalculate</button>
+<button id="refreshBtn" type="button">Refresh leaderboard</button>
 <button class="secondary" id="resetBtn" type="button">Clear Places</button>
 </div>
 <div class="small">You can manually overwrite any golfer place here.</div>
@@ -143,6 +145,12 @@ function resolvePlayerName(raw){
   return null;
 }
 function getStatusEl(){ return document.getElementById('statusBox'); }
+function getUpdatedStampEl(){ return document.getElementById('updatedStamp'); }
+function setUpdatedStamp(value){
+  const el = getUpdatedStampEl();
+  if(!el) return;
+  el.textContent = value ? value : '';
+}
 
 function getCurrentPayouts(){
   const map = {};
@@ -288,8 +296,14 @@ function parseLeaderboardText(text){
   const lines = String(text).split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
   const foundMap = {};
   const unmatched = [];
+  let updatedStamp = '';
   lines.forEach(line=>{
     if(line.startsWith('#') || line.startsWith('//')) return;
+    const updatedMatch = line.match(/^updated\s*:\s*(.+)$/i);
+    if(updatedMatch){
+      updatedStamp = `Updated: ${updatedMatch[1].trim()}`;
+      return;
+    }
     if(/^[-–—]+$/.test(line)) return;
 
     let place = null;
@@ -328,7 +342,7 @@ function parseLeaderboardText(text){
       unmatched.push(line);
     }
   });
-  return {foundMap, unmatched};
+  return {foundMap, unmatched, updatedStamp};
 }
 
 function applyPlaces(foundMap){
@@ -353,7 +367,8 @@ async function loadLeaderboardFile(){
     const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
-    const {foundMap, unmatched} = parseLeaderboardText(text);
+    const {foundMap, unmatched, updatedStamp} = parseLeaderboardText(text);
+    setUpdatedStamp(updatedStamp);
     applyPlaces(foundMap);
     renderParticipants();
     const filled = Object.keys(foundMap).length;
@@ -361,6 +376,7 @@ async function loadLeaderboardFile(){
     if(unmatched.length) msg += ` ${unmatched.length} line${unmatched.length===1?' was':'s were'} ignored.`;
     status.textContent = msg;
   }catch(err){
+    setUpdatedStamp('');
     status.textContent = 'Could not load leaderboard.txt. Make sure it is uploaded to the same GitHub Pages folder as index.html.';
   }
 }
