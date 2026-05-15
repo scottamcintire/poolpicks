@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="utf-8"/&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/&gt;</p>
+<p class="p1">&lt;title&gt;McGowan’s PGA Championship Pool - Prize Estimator&lt;/title&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">:root{--bg:#f5f1e8;--card:#fff;--ink:#1d2a22;--muted:#5d6b63;--accent:#1c6b43;--line:#d9d3c7;--soft:#f8f7f3}</p>
+<p class="p1">*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}</p>
+<p class="p1">body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}</p>
+<p class="p1">.wrap{max-width:1400px;margin:0 auto;padding:16px}</p>
+<p class="p1">h1{margin:0 0 8px;line-height:1.1}.subtitle{color:var(--muted);margin-bottom:18px;line-height:1.45;font-size:15px}</p>
+<p class="p1">.grid{display:grid;grid-template-columns:1.45fr 1fr;gap:18px;align-items:start}</p>
+<p class="p1">.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}</p>
+<p class="p1">.card h2{margin:0;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--soft);font-size:20px;line-height:1.2}</p>
+<p class="p1">.card-title{display:flex;align-items:center;justify-content:space-between;gap:12px}</p>
+<p class="p1">.updated-stamp{font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;text-align:right}</p>
+<p class="p1">.participants-note{padding:10px 18px 0;color:var(--muted);font-size:12px}.participants{padding:10px 14px 18px}</p>
+<p class="p1">.participant{display:grid;grid-template-columns:1.1fr 2.3fr .75fr 1fr;gap:12px;padding:12px 8px;border-bottom:1px solid #ece7dd;align-items:start}</p>
+<p class="p1">.participant:last-child{border-bottom:0}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}</p>
+<p class="p1">.p-name{font-weight:700}.p-golfers{line-height:1.4}.p-tb,.p-money{text-align:right;white-space:nowrap}</p>
+<p class="p1">.money-value{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}.right-col{display:grid;gap:18px}</p>
+<p class="p1">.inputs-wrap{padding:16px 18px 18px}.players-grid{display:grid;grid-template-columns:minmax(0,1fr) 80px 88px;gap:8px 10px;align-items:center}</p>
+<p class="p1">.players-grid .head{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-bottom:6px;border-bottom:1px solid #ece7dd;position:sticky;top:0;background:white;z-index:2}</p>
+<p class="p1">.player-name,.player-pct{padding:9px 0;border-bottom:1px dashed #ece7dd}.player-name{min-width:0;word-break:break-word}.player-pct{text-align:right;font-weight:700;color:var(--muted)}</p>
+<p class="p1">input.place-input,.payout-input{width:100%;padding:10px 8px;border:1px solid #cfc8bb;border-radius:8px;font-size:16px;min-height:42px;font-family:inherit}</p>
+<p class="p1">.payout-input{text-align:right;min-height:auto;padding:8px 8px}</p>
+<p class="p1">.place-input.loaded{background:#eef7f1;border-color:#8bb89d}</p>
+<p class="p1">.controls{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}</p>
+<p class="p1">button{border:0;background:var(--accent);color:white;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;min-height:44px}</p>
+<p class="p1">button.secondary{background:#7d8b83}button.ghost{background:#dfe7e1;color:#193025}</p>
+<p class="p1">.small{color:var(--muted);font-size:13px;line-height:1.45;margin-top:10px}.top-note{padding:0 18px 18px;color:var(--muted);font-size:13px;line-height:1.45}</p>
+<p class="p1">.table-wrap{padding:0 18px 18px;max-height:520px;overflow:auto}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}</p>
+<p class="p1">th,td{border-bottom:1px solid #ece7dd;padding:10px 12px;text-align:left;vertical-align:middle}th:last-child,td:last-child{text-align:right}</p>
+<p class="p1">.status-box{margin-top:10px;padding:10px 12px;background:#f8f7f3;border:1px solid #e6e0d4;border-radius:8px;color:var(--muted);font-size:13px;line-height:1.4}</p>
+<p class="p1">@media (max-width:1100px){.grid{grid-template-columns:1fr}}</p>
+<p class="p1">@media (max-width:760px){</p>
+<p class="p1">.wrap{padding:10px;max-width:100%} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.grid{display:flex;flex-direction:column}.right-col{order:0}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}.card-title{align-items:flex-start}.updated-stamp{font-size:13px;line-height:1.2;white-space:normal;max-width:52%}</p>
+<p class="p1">.participants{padding:6px 8px 10px}.participants-note{padding:8px 12px 0}.participant{grid-template-columns:1fr;gap:8px;padding:12px 8px}.p-tb,.p-money{text-align:left;white-space:normal}</p>
+<p class="p1">.inputs-wrap{padding:12px}.players-grid{grid-template-columns:minmax(0,1fr) 68px 62px;gap:7px 8px}.players-grid .head{font-size:10px;letter-spacing:.03em;position:static;padding-bottom:5px}</p>
+<p class="p1">.player-name,.player-pct{font-size:13px;padding:8px 0}.player-pct{align-self:center} input.place-input,.payout-input{font-size:16px;min-height:42px;padding:8px 6px}</p>
+<p class="p1">.controls{position:sticky;bottom:0;background:linear-gradient(to top,rgba(255,255,255,.98),rgba(255,255,255,.94));padding-top:10px;padding-bottom:max(10px, env(safe-area-inset-bottom));margin-top:12px;border-top:1px solid #ece7dd}</p>
+<p class="p1">button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font-size:12px}.table-wrap{max-height:280px;padding:0 12px 12px}th,td{padding:9px 8px;font-size:14px}}</p>
+<p class="p1">@media (max-width:430px){.wrap{padding:8px}h1{font-size:22px}.subtitle{font-size:13px}.players-grid{grid-template-columns:minmax(0,1fr) 60px 54px;gap:6px 7px}.player-name,.player-pct{font-size:12px}.label{font-size:11px}.participant{padding:10px 4px}.money-value{font-size:18px}th,td{font-size:13px}}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1">&lt;div class="wrap"&gt;</p>
+<p class="p1">&lt;h1&gt;McGowan’s PGA Championship Pool - Prize Estimator&lt;/h1&gt;</p>
+<p class="p1">&lt;div class="subtitle"&gt;Update the leaderboard below and click "Recalculate" to run a few “what if” scenarios.&lt;/div&gt;</p>
+<p class="p1">&lt;div class="grid"&gt;</p>
+<p class="p1">&lt;section class="card"&gt;</p>
+<p class="p1">&lt;h2 class="card-title"&gt;&lt;span&gt;The Contenders&lt;/span&gt;&lt;span class="updated-stamp" id="updatedStamp"&gt;&lt;/span&gt;&lt;/h2&gt;</p>
+<p class="p1">&lt;div class="participants-note"&gt;After loading, the list is automatically sorted from highest estimated total prize money to lowest.&lt;/div&gt;</p>
+<p class="p1">&lt;div class="participants" id="participants"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="right-col"&gt;</p>
+<p class="p1">&lt;section class="card"&gt;</p>
+<p class="p1">&lt;h2&gt;Leaderboard&lt;/h2&gt;</p>
+<p class="p1">&lt;div class="inputs-wrap"&gt;</p>
+<p class="p1">&lt;div class="players-grid" id="playerInputs"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;div class="controls"&gt;</p>
+<p class="p1">&lt;button id="calcBtn" type="button"&gt;Recalculate&lt;/button&gt;</p>
+<p class="p1">&lt;button id="refreshBtn" type="button"&gt;Refresh leaderboard&lt;/button&gt;</p>
+<p class="p1">&lt;button class="secondary" id="resetBtn" type="button"&gt;Clear Places&lt;/button&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;div class="small"&gt;You can manually overwrite any golfer place here.&lt;/div&gt;</p>
+<p class="p1">&lt;div class="status-box" id="statusBox"&gt;Loading leaderboard.txt...&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;section class="card"&gt;</p>
+<p class="p1">&lt;h2&gt;Estimated Prize Money by Place&lt;/h2&gt;</p>
+<p class="p1">&lt;div class="top-note"&gt;These payout amounts start prefilled with the two-year average PGA Championship payout estimate for places 1-100. You can edit any value before recalculating. Places not listed here return $0.&lt;/div&gt;</p>
+<p class="p1">&lt;div class="table-wrap"&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Place&lt;/th&gt;&lt;th&gt;Editable Prize&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody id="payoutTable"&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">const participants = [{"name": "Cardoza", "tiebreaker": -13, "golfers": ["Aberg", "Schauffele", "Henley", "Scheffler", "Fitzpatrick"]}, {"name": "Picardi", "tiebreaker": -16, "golfers": ["Scheffler", "McIlroy", "Young", "Rahm", "Schauffele"]}, {"name": "Malinowski", "tiebreaker": -15, "golfers": ["Scheffler", "McIlroy", "Young", "Aberg", "DeChambeau"]}, {"name": "McIntire", "tiebreaker": -17, "golfers": ["Scheffler", "McIlroy", "Young", "Aberg", "Fitzpatrick"]}, {"name": "Susi", "tiebreaker": -14, "golfers": ["Scheffler", "McIlroy", "Rahm", "Young", "DeChambeau"]}, {"name": "Sandman", "tiebreaker": -15, "golfers": ["Scheffler", "McIlroy", "Young", "DeChambeau", "Rahm"]}, {"name": "McGowan", "tiebreaker": -12, "golfers": ["Scheffler", "McIlroy", "Schauffele", "Young", "Fleetwood"]}, {"name": "DiPaolo", "tiebreaker": -12, "golfers": ["Scheffler", "McIlroy", "Schauffele", "Fleetwood", "Fitzpatrick"]}, {"name": "O'Rourke", "tiebreaker": -14, "golfers": ["Scheffler", "Young", "Fitzpatrick", "Aberg", "Schauffele"]}, {"name": "Guccione", "tiebreaker": -18, "golfers": ["Scheffler", "McIlroy", "Schauffele", "Young", "Rose"]}, {"name": "Welch", "tiebreaker": -16, "golfers": ["Scheffler", "McIlroy", "Young", "Schauffele", "Fleetwood"]}, {"name": "Enright", "tiebreaker": -14, "golfers": ["Scheffler", "Schauffele", "Fleetwood", "Young", "Fitzpatrick"]}, {"name": "Gary Roz", "tiebreaker": -16, "golfers": ["Scheffler", "McIlroy", "Young", "Rose", "Henley"]}, {"name": "Jardin", "tiebreaker": -7, "golfers": ["Scheffler", "Young", "Bhatia", "Fitzpatrick", "Morikawa"]}, {"name": "Colgan", "tiebreaker": -13, "golfers": ["Scheffler", "Gotterup", "Young", "Fleetwood", "Aberg"]}, {"name": "Morrison", "tiebreaker": -15, "golfers": ["Scheffler", "Schauffele", "Henley", "Fitzpatrick", "Hovland"]}, {"name": "Domski", "tiebreaker": -14, "golfers": ["Scheffler", "McIlroy", "Young", "Fitzpatrick", "Schauffele"]}, {"name": "Smith", "tiebreaker": -14, "golfers": ["Scheffler", "McIlroy", "Aberg", "Fitzpatrick", "Young"]}];</p>
+<p class="p1">const defaultPayouts = {"1": 3375000, "2": 2025000, "3": 1275000, "4": 900000, "5": 750000, "6": 672230, "7": 629260, "8": 588030, "9": 548585, "10": 510935, "11": 475085, "12": 441020, "13": 408750, "14": 378275, "15": 349590, "16": 322700, "17": 297600, "18": 274295, "19": 252780, "20": 233060, "21": 215135, "22": 198995, "23": 184655, "24": 173000, "25": 161795, "26": 151040, "27": 140730, "28": 130870, "29": 121455, "30": 112495, "31": 105325, "32": 99050, "33": 93670, "34": 89190, "35": 85605, "36": 82200, "37": 78885, "38": 75655, "39": 72515, "40": 69470, "41": 66510, "42": 63640, "43": 60860, "44": 58175, "45": 55575, "46": 53065, "47": 50645, "48": 48315, "49": 46075, "50": 43925, "51": 41860, "52": 39885, "53": 38005, "54": 36210, "55": 34510, "56": 32895, "57": 31375, "58": 30115, "59": 29045, "60": 28150, "61": 27430, "62": 26910, "63": 26460, "64": 26040, "65": 25635, "66": 25240, "67": 24860, "68": 24490, "69": 24130, "70": 23790, "71": 23500, "72": 23285, "73": 23110, "74": 22945, "75": 13175, "76": 13115, "77": 13070, "78": 13050, "79": 4000, "80": 4000, "81": 4000, "82": 4000, "83": 4000, "84": 4000, "85": 4000, "86": 4000, "87": 4000, "88": 4000, "89": 4000, "90": 4000, "91": 4000, "92": 4000, "93": 4000, "94": 4000, "95": 4000, "96": 4000, "97": 4000, "98": 4000, "99": 4000, "100": 4000};</p>
+<p class="p1">const players = ["Aberg", "Bhatia", "DeChambeau", "Fitzpatrick", "Fleetwood", "Gotterup", "Henley", "Hovland", "McIlroy", "Morikawa", "Rahm", "Rose", "Schauffele", "Scheffler", "Young"];</p>
+<p class="p1">const pickPct = {"Aberg": 33, "Bhatia": 6, "DeChambeau": 17, "Fitzpatrick": 50, "Fleetwood": 28, "Gotterup": 6, "Henley": 17, "Hovland": 6, "McIlroy": 67, "Morikawa": 6, "Rahm": 17, "Rose": 11, "Schauffele": 56, "Scheffler": 100, "Young": 83};</p>
+<p class="p2"><br></p>
+<p class="p1">const playerAliases = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"scheffler": "Scheffler",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"scottie scheffler": "Scheffler",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"mcilroy": "McIlroy",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"rory mcilroy": "McIlroy",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"rory": "McIlroy",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"rahm": "Rahm",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"jon rahm": "Rahm",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"aberg": "Aberg",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"åberg": "Aberg",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"ludvig aberg": "Aberg",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"ludvig åberg": "Aberg",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"schauffele": "Schauffele",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"xander schauffele": "Schauffele",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"henley": "Henley",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"russell henley": "Henley",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"m fitzpatrick": "Fitzpatrick",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"m. fitzpatrick": "Fitzpatrick",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"fitzpatrick": "Fitzpatrick",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"matt fitzpatrick": "Fitzpatrick",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"matthew fitzpatrick": "Fitzpatrick",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"dechambeau": "DeChambeau",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"bryson dechambeau": "DeChambeau",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"young": "Young",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"cam young": "Young",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"cameron young": "Young",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"fleetwood": "Fleetwood",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"tommy fleetwood": "Fleetwood",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"rose": "Rose",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"justin rose": "Rose",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"bhatia": "Bhatia",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"akshay bhatia": "Bhatia",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"morikawa": "Morikawa",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"collin morikawa": "Morikawa",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"gotterup": "Gotterup",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"chris gotterup": "Gotterup",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"christopher gotterup": "Gotterup",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"hovland": "Hovland",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"viktor hovland": "Hovland"</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">function fmtMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v||0)}</p>
+<p class="p1">function fmtScore(v){ const n = Number(v); return n &gt; 0 ? `+${n}` : String(n); }</p>
+<p class="p1">function fmtPlainNumber(v){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(v||0)}</p>
+<p class="p1">function parseMoneyInput(value){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const cleaned = String(value).replace(/[^0-9.-]/g,'');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const num = Number(cleaned);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return Number.isFinite(num) ? num : 0;</p>
+<p class="p1">}</p>
+<p class="p1">function cssSafe(t){return t.replace(/[^a-zA-Z0-9_-]/g,'_')}</p>
+<p class="p1">function normalizeName(t){return t.toLowerCase().replace(/[.,]/g,' ').replace(/\(.*?\)/g,' ').replace(/\s+/g,' ').trim()}</p>
+<p class="p1">function resolvePlayerName(raw){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const n = normalizeName(raw);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(playerAliases[n]) return playerAliases[n];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const directPlayerMatch = players.find(p =&gt; normalizeName(p) === n);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(directPlayerMatch) return directPlayerMatch;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for(const [alias,canonical] of Object.entries(playerAliases)){ if(n.includes(alias)) return canonical; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return null;</p>
+<p class="p1">}</p>
+<p class="p1">function getStatusEl(){ return document.getElementById('statusBox'); }</p>
+<p class="p1">function getUpdatedStampEl(){ return document.getElementById('updatedStamp'); }</p>
+<p class="p1">function setUpdatedStamp(value){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const el = getUpdatedStampEl();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!el) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.textContent = value ? value : '';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function getCurrentPayouts(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const map = {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>Object.keys(defaultPayouts).forEach(key=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const el = document.getElementById(`payout-${key}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>map[key] = el ? parseMoneyInput(el.value) : Number(defaultPayouts[key]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return map;</p>
+<p class="p1">}</p>
+<p class="p1">function getEnteredPlaces(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const map = {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>players.forEach(player=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const el = document.getElementById(`place-${cssSafe(player)}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!el) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const value = el.value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(value !== '') {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const num = Number(value);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(Number.isFinite(num) &amp;&amp; num &gt; 0) map[player] = Math.trunc(num);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return map;</p>
+<p class="p1">}</p>
+<p class="p1">function computeParticipantTotals(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const places = getEnteredPlaces();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const payouts = getCurrentPayouts();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return participants.map(p=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const total = p.golfers.reduce((sum,golfer)=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const place = places[golfer];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!place || !payouts[place]) return sum;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return sum + payouts[place];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return {...p,total};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).sort((a,b)=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(b.total !== a.total) return b.total - a.total;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return a.name.localeCompare(b.name);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p1">function renderParticipants(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const container = document.getElementById('participants');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ranked = computeParticipantTotals();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>container.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>ranked.forEach(p=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const row = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.className = 'participant';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.innerHTML = `&lt;div&gt;&lt;div class="p-name"&gt;${p.name}&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;div class="label"&gt;5 Golfers&lt;/div&gt;&lt;div class="p-golfers"&gt;${p.golfers.join(', ')}&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="p-tb"&gt;&lt;div class="label"&gt;Tiebreaker&lt;/div&gt;&lt;div&gt;${fmtScore(p.tiebreaker)}&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="p-money"&gt;&lt;div class="label"&gt;Estimated Total Prize&lt;/div&gt;&lt;div class="money-value"&gt;${fmtMoney(p.total)}&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>container.appendChild(row);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p1">function sortPlayersForDisplay(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const places = getEnteredPlaces();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return [...players].sort((a,b)=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pa = places[a];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pb = places[b];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const aBlank = !(pa &gt; 0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const bBlank = !(pb &gt; 0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (aBlank &amp;&amp; bBlank) return a.localeCompare(b);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (aBlank) return 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (bBlank) return -1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (pa !== pb) return pa - pb;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return a.localeCompare(b);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p1">function renderInputs(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const container = document.getElementById('playerInputs');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const currentPlaces = getEnteredPlaces();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const loadedMap = {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>players.forEach(player=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const existing = document.getElementById(`place-${cssSafe(player)}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>loadedMap[player] = !!(existing &amp;&amp; existing.classList.contains('loaded'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const orderedPlayers = [...players].sort((a,b)=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pa = currentPlaces[a];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pb = currentPlaces[b];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const aBlank = !(pa &gt; 0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const bBlank = !(pb &gt; 0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (aBlank &amp;&amp; bBlank) return a.localeCompare(b);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (aBlank) return 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (bBlank) return -1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (pa !== pb) return pa - pb;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return a.localeCompare(b);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>container.innerHTML = '&lt;div class="head"&gt;Golfer&lt;/div&gt;&lt;div class="head"&gt;Place&lt;/div&gt;&lt;div class="head"&gt;% Taken&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>orderedPlayers.forEach(player=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const currentValue = currentPlaces[player] ? String(currentPlaces[player]) : '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const name = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>name.className = 'player-name';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>name.textContent = player;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const input = document.createElement('input');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.type = 'number';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.min = '1';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.step = '1';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.className = 'place-input' + (loadedMap[player] ? ' loaded' : '');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.id = `place-${cssSafe(player)}`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.placeholder = '—';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.value = currentValue;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.addEventListener('change', ()=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>renderInputs();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>renderParticipants();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pct = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>pct.className = 'player-pct';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>pct.textContent = `${pickPct[player]}%`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>container.appendChild(name);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>container.appendChild(input);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>container.appendChild(pct);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p1">function renderPayoutTable(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const body = document.getElementById('payoutTable'); body.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>Object.keys(defaultPayouts).map(Number).sort((a,b)=&gt;a-b).forEach(place=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const tr = document.createElement('tr');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>tr.innerHTML = `&lt;td&gt;${place}&lt;/td&gt;&lt;td&gt;&lt;input class="payout-input" id="payout-${place}" type="text" value="${fmtPlainNumber(defaultPayouts[place])}"&gt;&lt;/td&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body.appendChild(tr);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>Object.keys(defaultPayouts).forEach(key=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const el = document.getElementById(`payout-${key}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(el) el.addEventListener('change', renderParticipants);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function clearPlaces(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>players.forEach(player=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const el = document.getElementById(`place-${cssSafe(player)}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(el){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.classList.remove('loaded');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderInputs();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderParticipants();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>getStatusEl().textContent = 'Golfer places cleared.';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function parseLeaderboardText(text){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const lines = String(text).split(/\r?\n/).map(s=&gt;s.trim()).filter(Boolean);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const foundMap = {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const unmatched = [];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let updatedStamp = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>lines.forEach(line=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(line.startsWith('#') || line.startsWith('//')) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const updatedMatch = line.match(/^updated\s*:\s*(.+)$/i);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(updatedMatch){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>updatedStamp = `Updated: ${updatedMatch[1].trim()}`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(/^[-–—]+$/.test(line)) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>let place = null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let rawName = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Format 1: "T12 Scheffler" or "12 Scottie Scheffler"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let match = line.match(/^T?(\d{1,3})\s+(.+)$/i);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(match){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>place = Number(match[1]);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>rawName = match[2];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Format 2: "Scheffler = T12", "Scheffler | 12", "Scheffler, 12", "Scheffler: T12"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>match = line.match(/^(.+?)\s*(?:=|\||,|:)\s*T?(\d{1,3})\s*$/i);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(match){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>rawName = match[1];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>place = Number(match[2]);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!match){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Allow blank template lines like "Scheffler =" without reporting them as errors.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(/^.+?(?:=|\||,|:)\s*$/.test(line)) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>unmatched.push(line);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cleanedName = rawName</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.replace(/^[\-–—:]+/,'')</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.replace(/\s+E$/i,'')</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.replace(/\s+[+-]\d+$/i,'')</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const resolved = resolvePlayerName(cleanedName);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(resolved &amp;&amp; players.includes(resolved) &amp;&amp; place &gt; 0){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>foundMap[resolved] = Math.trunc(place);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>unmatched.push(line);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return {foundMap, unmatched, updatedStamp};</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function applyPlaces(foundMap){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>players.forEach(player=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const el = document.getElementById(`place-${cssSafe(player)}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!el) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>el.classList.remove('loaded');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(Object.prototype.hasOwnProperty.call(foundMap, player)){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.value = String(foundMap[player]);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.classList.add('loaded');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderInputs();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">async function loadLeaderboardFile(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const status = getStatusEl();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>status.textContent = 'Loading leaderboard.txt...';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!response.ok) throw new Error(`HTTP ${response.status}`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const text = await response.text();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const {foundMap, unmatched, updatedStamp} = parseLeaderboardText(text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setUpdatedStamp(updatedStamp);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>applyPlaces(foundMap);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderParticipants();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const filled = Object.keys(foundMap).length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let msg = `Loaded leaderboard.txt and applied ${filled} golfer place${filled===1?'':'s'}.`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(unmatched.length) msg += ` ${unmatched.length} line${unmatched.length===1?' was':'s were'} ignored.`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>status.textContent = msg;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(err){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setUpdatedStamp('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>status.textContent = 'Could not load leaderboard.txt. Make sure it is uploaded to the same GitHub Pages folder as index.html.';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">document.getElementById('refreshBtn').addEventListener('click', loadLeaderboardFile);</p>
+<p class="p1">document.getElementById('calcBtn').addEventListener('click', renderParticipants);</p>
+<p class="p1">document.getElementById('resetBtn').addEventListener('click', clearPlaces);</p>
+<p class="p2"><br></p>
+<p class="p1">renderInputs();</p>
+<p class="p1">renderPayoutTable();</p>
+<p class="p1">renderParticipants();</p>
+<p class="p1">loadLeaderboardFile();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;&lt;/html&gt;</p>
+</body>
+</html>
