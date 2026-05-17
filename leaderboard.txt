@@ -4,18 +4,20 @@
 # Leave a line blank after the equals sign until you know the place.
 Updated: Friday, 8:30 PM
 
-Aberg = 9
+Updated: Saturday, 8:30 PM
+
+Aberg = 2
 Bhatia = 80
 DeChambeau = 80
-M Fitzpatrick = 44
+M Fitzpatrick = 52
 Fleetwood = 80
-Gotterup = 3
+Gotterup = 11
 Henley = 80
 Hovland = 80
-McIlroy = 30
-Morikawa = 30
-Rahm = 16
-Rose = 59
-Schauffele = 30
-Scheffler = 9
-Young = 9
+McIlroy = 7
+Morikawa = 76
+Rahm = 2
+Rose = 11
+Schauffele = 7
+Scheffler = 24
+Young = 31
