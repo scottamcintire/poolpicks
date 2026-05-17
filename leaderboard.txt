@@ -2,22 +2,20 @@
 # Fill in each selected golfer's current finishing position/place.
 # Accepted formats include: Scheffler = 1, McIlroy = T2, or T2 Rory McIlroy.
 # Leave a line blank after the equals sign until you know the place.
-Updated: Friday, 8:30 PM
+Updated: Sunday, 4 PM
 
-Updated: Saturday, 8:30 PM
-
-Aberg = 2
+Aberg = 5
 Bhatia = 80
 DeChambeau = 80
-M Fitzpatrick = 52
+M Fitzpatrick = 16
 Fleetwood = 80
-Gotterup = 11
+Gotterup = 10
 Henley = 80
 Hovland = 80
-McIlroy = 7
-Morikawa = 76
-Rahm = 2
-Rose = 11
-Schauffele = 7
-Scheffler = 24
-Young = 31
+McIlroy = 5
+Morikawa = 57
+Rahm = 5
+Rose = 10
+Schauffele = 10
+Scheffler = 16
+Young = 27
