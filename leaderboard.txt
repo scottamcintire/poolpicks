@@ -1,21 +1,18 @@
-# McGowan's PGA Championship Pool - leaderboard.txt
-# Fill in each selected golfer's current finishing position/place.
-# Accepted formats include: Scheffler = 1, McIlroy = T2, or T2 Rory McIlroy.
-# Leave a line blank after the equals sign until you know the place.
-Updated: Sunday, 7:30PM
+Updated: Thursday 6/18, 10:57 PM ET
 
-Aberg = 5
-Bhatia = 80
-DeChambeau = 80
-M Fitzpatrick = 14
-Fleetwood = 80
-Gotterup = 10
-Henley = 80
-Hovland = 80
-McIlroy = 7
-Morikawa = 55
-Rahm = 2
-Rose = 10
-Schauffele = 7
-Scheffler = 14
-Young = 26
+Scheffler = T49
+McIlroy = T9
+Rahm = T2
+Schauffele = T49
+Young = T49
+Fleetwood = T18
+Henley = T18
+Fitzpatrick = T2
+Clark = 1
+Cam Smith = T113
+DeChambeau = T9
+Koepka = T72
+Rose = T72
+Rai = T92
+Burns = T29
+Hatton =
