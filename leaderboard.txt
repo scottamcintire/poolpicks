@@ -1,18 +1,18 @@
-Updated: Thursday 6/18, 10:57 PM ET
+Updated: Friday 6/19, 9:26 PM ET
 
-Scheffler = T49
-McIlroy = T9
-Rahm = T2
-Schauffele = T49
-Young = T49
-Fleetwood = T18
-Henley = T18
+Scheffler = T11
+McIlroy = T11
+Rahm = T95
+Schauffele = T2
+Young = T34
+Fleetwood = T22
+Henley = T46
 Fitzpatrick = T2
 Clark = 1
-Cam Smith = T113
-DeChambeau = T9
-Koepka = T72
-Rose = T72
-Rai = T92
-Burns = T29
-Hatton =
+Cam Smith = T95
+DeChambeau = T82
+Koepka = T126
+Rose = T22
+Rai = T22
+Burns = T7
+Hatton = T34
