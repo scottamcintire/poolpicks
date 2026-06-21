@@ -1,18 +1,24 @@
-Updated: Friday 6/19, 9:26 PM ET
+Updated: Sunday 6/21, 4:50 PM ET
 
-Scheffler = T11
-McIlroy = T11
-Rahm = T95
-Schauffele = T2
-Young = T34
-Fleetwood = T22
-Henley = T46
-Fitzpatrick = T2
+Scheffler = T3
+McIlroy = T27
+Rahm =
+Schauffele = T9
+Young = T44
+Fleetwood = T9
+Henley = T65
+Fitzpatrick = T18
 Clark = 1
-Cam Smith = T95
-DeChambeau = T82
-Koepka = T126
-Rose = T22
-Rai = T22
-Burns = T7
-Hatton = T34
+Cam Smith =
+DeChambeau =
+Koepka =
+Rose = T18
+Rai = T18
+Burns = 2
+Hatton = T9
+
+# Cut / no payout:
+# Rahm = CUT
+# Cam Smith = CUT
+# DeChambeau = CUT
+# Koepka = CUT
