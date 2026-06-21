@@ -40,12 +40,25 @@ th,td{border-bottom:1px solid #ece7dd;padding:10px 12px;text-align:left;vertical
 .controls{position:sticky;bottom:0;background:linear-gradient(to top,rgba(255,255,255,.98),rgba(255,255,255,.94));padding-top:10px;padding-bottom:max(10px, env(safe-area-inset-bottom));margin-top:12px;border-top:1px solid #ece7dd}
 button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font-size:12px}.table-wrap{max-height:280px;padding:0 12px 12px}th,td{padding:9px 8px;font-size:14px}}
 @media (max-width:430px){.wrap{padding:8px}h1{font-size:22px}.subtitle{font-size:13px}.players-grid{grid-template-columns:minmax(0,1fr) 60px 54px;gap:6px 7px}.player-name,.player-pct{font-size:12px}.label{font-size:11px}.participant{padding:10px 4px}.money-value{font-size:18px}th,td{font-size:13px}}
+
+.last-updated-bar{
+  margin:0 0 16px;
+  padding:10px 14px;
+  background:#eef7f1;
+  border:1px solid #b9d8c4;
+  border-radius:10px;
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.35;
+}
+.last-updated-bar strong{color:var(--accent)}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>McGowan’s U.S. Open Pool - Prize Estimator</h1>
 <div class="subtitle">Manually change any golfer place or payout amount, and click recalculate. Prize calculations are estimated based on previous payouts. Results are not final until the commissioner has spoken.</div>
+<div class="last-updated-bar" id="lastUpdatedBar"><strong>Last updated:</strong> loading leaderboard.txt...</div>
 <div class="grid">
 <section class="card">
 <h2>The Contenders</h2>
@@ -288,12 +301,31 @@ function clearPlaces(){
   getStatusEl().textContent = 'Golfer places cleared.';
 }
 
+
+function parseLastUpdatedText(text){
+  const lines = String(text).split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  for(const line of lines){
+    const match = line.match(/^(?:#\s*)?(?:updated|last updated|as of)\s*(?:=|:|-)?\s*(.+)$/i);
+    if(match && match[1].trim()) return match[1].trim();
+  }
+  return null;
+}
+function setLastUpdatedBar(value){
+  const el = document.getElementById('lastUpdatedBar');
+  if(!el) return;
+  el.innerHTML = value
+    ? `<strong>Last updated:</strong> ${value}`
+    : `<strong>Last updated:</strong> not provided in leaderboard.txt`;
+}
+
 function parseLeaderboardText(text){
   const lines = String(text).split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
   const foundMap = {};
   const unmatched = [];
   lines.forEach(line=>{
-    if(line.startsWith('#') || line.startsWith('//')) return;
+    if(line.startsWith('//')) return;
+    if(/^(?:#\s*)?(?:updated|last updated|as of)\s*(?:=|:|-)?\s*.+$/i.test(line)) return;
+    if(line.startsWith('#')) return;
     if(/^[-–—]+$/.test(line)) return;
 
     let place = null;
@@ -357,6 +389,7 @@ async function loadLeaderboardFile(){
     const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
+    setLastUpdatedBar(parseLastUpdatedText(text));
     const {foundMap, unmatched} = parseLeaderboardText(text);
     applyPlaces(foundMap);
     renderParticipants();
@@ -365,6 +398,7 @@ async function loadLeaderboardFile(){
     if(unmatched.length) msg += ` ${unmatched.length} line${unmatched.length===1?' was':'s were'} ignored.`;
     status.textContent = msg;
   }catch(err){
+    setLastUpdatedBar(null);
     status.textContent = 'Could not load leaderboard.txt. Make sure it is uploaded to the same GitHub Pages folder as index.html.';
   }
 }
