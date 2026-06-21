@@ -1,24 +1,20 @@
-Updated: Sunday 6/21, 4:50 PM ET
+Updated: Sunday 6/21, 5:00 PM ET
 
-Scheffler = T3
-McIlroy = T27
-Rahm =
-Schauffele = T9
-Young = T44
-Fleetwood = T9
-Henley = T65
-Fitzpatrick = T18
 Clark = 1
-Cam Smith =
-DeChambeau =
-Koepka =
-Rose = T18
-Rai = T18
 Burns = 2
-Hatton = T9
+Scheffler = T6
+Hatton = T8
+Fleetwood = T8
+Rose = T14
+Schauffele = T14
+Rai = T14
+Fitzpatrick = T19
+McIlroy = T33
+Young = T43
+Henley = T65
 
-# Cut / no payout:
-# Rahm = CUT
-# Cam Smith = CUT
-# DeChambeau = CUT
-# Koepka = CUT
+# Cut / no payout, ranked from best cut score to worst:
+DeChambeau =
+Cam Smith =
+Rahm =
+Koepka =
