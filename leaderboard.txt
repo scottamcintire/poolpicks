@@ -1,20 +1,19 @@
-Updated: Sunday 6/21, 5:00 PM ET
-
+Updated: Sunday 6/21, Final
 Clark = 1
 Burns = 2
-Scheffler = T6
-Hatton = T8
-Fleetwood = T8
-Rose = T14
-Schauffele = T14
-Rai = T14
-Fitzpatrick = T19
-McIlroy = T33
+Scheffler = T4
+Hatton = T7
+Rose = T11
+Rai = T11
+Fleetwood = T11
+Schauffele = T11
+Fitzpatrick = 22
+McIlroy = T32
 Young = T43
 Henley = T65
 
 # Cut / no payout, ranked from best cut score to worst:
-DeChambeau =
-Cam Smith =
-Rahm =
-Koepka =
+DeChambeau = CUT
+Cam Smith = CUT
+Rahm = CUT
+Koepka = CUT
