@@ -300,6 +300,17 @@ th:last-child,td:last-child{text-align:right}
   .money-value{font-size:18px}
   th,td{font-size:13px}
 }
+
+.dashboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.mini-card{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.mini-label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:800;margin-bottom:6px}
+.mini-value{color:var(--navy);font-size:18px;font-weight:800;line-height:1.25}
+.participant.rank-1{background:linear-gradient(90deg,rgba(200,164,77,.24),transparent);border-left:5px solid #c8a44d}
+.participant.rank-2{background:linear-gradient(90deg,rgba(185,190,196,.20),transparent);border-left:5px solid #aeb5bd}
+.participant.rank-3{background:linear-gradient(90deg,rgba(185,122,69,.18),transparent);border-left:5px solid #b97a45}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:27px;padding:0 7px;border-radius:999px;margin-right:7px;background:var(--navy);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:12px;font-weight:800;vertical-align:middle}
+@media (max-width:760px){.dashboard{grid-template-columns:1fr}}
+
 </style>
 
 </head>
@@ -308,13 +319,20 @@ th:last-child,td:last-child{text-align:right}
 <header class="hero">
   <div class="kicker">Links Golf • British Major • Pool Headquarters</div>
   <h1>McGowan’s Open Championship Pool</h1>
-  <p class="subtitle">Enter or refresh golfer positions, adjust prize values, and recalculate the standings. Estimates remain unofficial until the commissioner has spoken.</p>
+  <p class="subtitle">Enter or refresh golfer positions, adjust the 2025 Open Championship prize values, and recalculate the standings. Ties are not automatically split, so estimates remain unofficial until the commissioner has spoken.</p>
   <div class="hero-badges">
     <span class="badge">17 Entrants</span>
     <span class="badge">5 Golfers Each</span>
     <span class="badge">Tiebreaker: Winning Score</span>
   </div>
 </header>
+
+<section class="dashboard">
+  <div class="mini-card"><div class="mini-label">Current Leader</div><div class="mini-value" id="currentLeader">—</div></div>
+  <div class="mini-card"><div class="mini-label">Most Valuable Pick</div><div class="mini-value" id="mvpPick">—</div></div>
+  <div class="mini-card"><div class="mini-label">Highest-Owned Golfer</div><div class="mini-value" id="chalkPick">—</div></div>
+</section>
+
 <div class="grid">
 <section class="card">
 <h2>The Contenders</h2>
@@ -339,7 +357,7 @@ th:last-child,td:last-child{text-align:right}
 
 <section class="card">
 <h2>Estimated Prize Money by Place</h2>
-<div class="top-note">These payout amounts start prefilled with the editable prize-money estimate. You can edit any value before recalculating. Places not listed here return $0.</div>
+<div class="top-note">These values are prefilled with the 2025 Open Championship scheduled payouts for places 1–20. You can edit any amount before recalculating. Places outside the top 20 return $0.</div>
 <div class="table-wrap"><table><thead><tr><th>Place</th><th>Editable Prize</th></tr></thead><tbody id="payoutTable"></tbody></table></div>
 </section>
 </div>
@@ -349,7 +367,7 @@ th:last-child,td:last-child{text-align:right}
 
 <script>
 const participants = [{"name":"McGowan","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Gotterup"]},{"name":"Boli","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Rahm"]},{"name":"Welch","tiebreaker":-10,"golfers":["Fleetwood","McIlroy","Matt Fitzpatrick","Rose","Rahm"]},{"name":"McIntire","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Rose","Matt Fitzpatrick"]},{"name":"Sandman","tiebreaker":-4,"golfers":["Schauffele","Clark","McIlroy","Morikawa","Matt Fitzpatrick"]},{"name":"Lawrence","tiebreaker":-10,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Hatton","Schauffele"]},{"name":"Picardi","tiebreaker":-13,"golfers":["Scheffler","McIlroy","Fleetwood","Rahm","Matt Fitzpatrick"]},{"name":"Cardoza","tiebreaker":-10,"golfers":["Fleetwood","MacIntyre","Matt Fitzpatrick","Alex Fitzpatrick","McIlroy"]},{"name":"O'Rourke","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Rose","Hatton"]},{"name":"Morrison","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Schauffele","Aberg"]},{"name":"Malinowski","tiebreaker":-14,"golfers":["Scheffler","McIlroy","Rose","MacIntyre","Henley"]},{"name":"Susi","tiebreaker":-13,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Tom Kim","Gotterup"]},{"name":"Domski","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Hovland"]},{"name":"Guccione","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Schauffele","Henley","Rose"]},{"name":"Rozynak","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Rose"]},{"name":"Smith","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Matt Fitzpatrick","Rose"]},{"name":"Enright","tiebreaker":-14,"golfers":["Scheffler","Matt Fitzpatrick","McIlroy","Fleetwood","Clark"]}];
-const defaultPayouts = {"1":4500000,"2":2430000,"3":1512274,"4":1060158,"5":883010,"6":782952,"7":705863,"8":632183,"9":572149,"10":525531,"11":479595,"12":443437,"13":413193,"14":381356,"15":354068,"16":331328,"17":313135,"18":294943,"19":276750,"20":258558,"21":242867,"22":227177,"23":211941,"24":197841,"25":185561,"26":175101,"27":167142,"28":160092,"29":153270,"30":146448,"31":139626,"32":132803,"33":125981,"34":119841,"35":114839,"36":109836,"37":105060,"38":100512,"39":95964,"40":91416,"41":86868,"42":82320,"43":77772,"44":73223,"45":68675,"46":64582,"47":60489,"48":56624,"49":54350,"50":52075,"51":50711,"52":49573,"53":48664,"54":48210,"55":47754,"56":47299,"57":46845,"58":46390,"59":45936,"60":45480};
+const defaultPayouts = {"1":3100000,"2":1759000,"3":1128000,"4":876000,"5":705000,"6":611000,"7":525000,"8":442500,"9":388000,"10":350600,"11":319200,"12":282800,"13":266000,"14":248300,"15":230500,"16":212800,"17":203900,"18":195100,"19":186200,"20":177300};
 const players = ["Aberg","Alex Fitzpatrick","Clark","Fleetwood","Gotterup","Hatton","Henley","Hovland","MacIntyre","Matt Fitzpatrick","McIlroy","Morikawa","Rahm","Rose","Schauffele","Scheffler","Tom Kim"];
 const pickPct = {"Aberg":6,"Alex Fitzpatrick":6,"Clark":12,"Fleetwood":71,"Gotterup":12,"Hatton":12,"Henley":12,"Hovland":6,"MacIntyre":12,"Matt Fitzpatrick":76,"McIlroy":88,"Morikawa":6,"Rahm":18,"Rose":41,"Schauffele":35,"Scheffler":82,"Tom Kim":6};
 
@@ -411,19 +429,45 @@ function computeParticipantTotals(){
     return a.name.localeCompare(b.name);
   });
 }
+function updateDashboard(ranked){
+  const leaderEl = document.getElementById('currentLeader');
+  const mvpEl = document.getElementById('mvpPick');
+  const chalkEl = document.getElementById('chalkPick');
+  if(leaderEl) leaderEl.textContent = ranked.length ? `${ranked[0].name} — ${fmtMoney(ranked[0].total)}` : '—';
+
+  const places = getEnteredPlaces();
+  const payouts = getCurrentPayouts();
+  const golferValues = players.map(player=>{
+    const place = places[player];
+    const prize = place && payouts[place] ? payouts[place] : 0;
+    return {player, prize};
+  }).sort((a,b)=>b.prize-a.prize || a.player.localeCompare(b.player));
+
+  if(mvpEl){
+    const top = golferValues[0];
+    mvpEl.textContent = top && top.prize ? `${top.player} — ${fmtMoney(top.prize)}` : 'Awaiting scores';
+  }
+  if(chalkEl){
+    const chalk = [...players].sort((a,b)=>(pickPct[b]||0)-(pickPct[a]||0) || a.localeCompare(b))[0];
+    chalkEl.textContent = chalk ? `${chalk} — ${pickPct[chalk]}%` : '—';
+  }
+}
+
 function renderParticipants(){
   const container = document.getElementById('participants');
   const ranked = computeParticipantTotals();
   container.innerHTML = '';
-  ranked.forEach(p=>{
+  ranked.forEach((p,index)=>{
     const row = document.createElement('div');
-    row.className = 'participant';
-    row.innerHTML = `<div><div class="p-name">${p.name}</div></div>
+    row.className = `participant rank-${index+1}`;
+    const medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+    row.innerHTML = `<div><div class="p-name"><span class="rank-badge">${index+1}</span>${medal ? medal + ' ' : ''}${p.name}</div></div>
     <div><div class="label">5 Golfers</div><div class="p-golfers">${p.golfers.join(', ')}</div></div>
     <div class="p-tb"><div class="label">Tiebreaker</div><div>${fmtScore(p.tiebreaker)}</div></div>
     <div class="p-money"><div class="label">Estimated Total Prize</div><div class="money-value">${fmtMoney(p.total)}</div></div>`;
     container.appendChild(row);
   });
+  updateDashboard(ranked);
 }
 function sortPlayersForDisplay(){
   const places = getEnteredPlaces();
