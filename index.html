@@ -378,12 +378,12 @@ th:last-child,td:last-child{text-align:right}
 <div class="inputs-wrap">
 <div class="players-grid" id="playerInputs"></div>
 <div class="controls">
-<button id="refreshBtn" type="button">Refresh leaderboard.txt</button>
+<button id="refreshBtn" type="button">Refresh leaderboard.TXT</button>
 <button id="calcBtn" type="button">Recalculate</button>
 <button class="secondary" id="resetBtn" type="button">Clear Places</button>
 </div>
-<div class="small">You can manually overwrite any golfer place here.</div>
-<div class="status-box" id="statusBox">Loading leaderboard.txt...</div>
+<div class="small">All golfer positions load from leaderboard.TXT. You can manually overwrite a position temporarily; refreshing reloads the file values.</div>
+<div class="status-box" id="statusBox">Loading leaderboard.TXT...</div>
 </div>
 </section>
 
@@ -673,9 +673,9 @@ function applyPlaces(foundMap){
 
 async function loadLeaderboardFile(){
   const status = getStatusEl();
-  status.textContent = 'Loading leaderboard.txt...';
+  status.textContent = 'Loading leaderboard.TXT...';
   try{
-    const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});
+    const response = await fetch('leaderboard.TXT?ts=' + Date.now(), {cache:'no-store'});
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
     const stamp=document.getElementById('lastUpdatedStamp');
@@ -684,18 +684,18 @@ async function loadLeaderboardFile(){
       if(m){
         stamp.textContent='Last updated: '+m[1].trim();
       }else{
-        stamp.textContent='Last updated: (not found in leaderboard.txt)';
+        stamp.textContent='Last updated: (not found in leaderboard.TXT)';
       }
     }
     const {foundMap, unmatched} = parseLeaderboardText(text);
     applyPlaces(foundMap);
     renderParticipants();
     const filled = Object.keys(foundMap).length;
-    let msg = `Loaded leaderboard.txt and applied ${filled} golfer place${filled===1?'':'s'}.`;
+    let msg = `Loaded leaderboard.TXT and applied ${filled} golfer place${filled===1?'':'s'}.`;
     if(unmatched.length) msg += ` ${unmatched.length} line${unmatched.length===1?' was':'s were'} ignored.`;
     status.textContent = msg;
   }catch(err){
-    status.textContent = 'Could not load leaderboard.txt. Make sure it is uploaded to the same GitHub Pages folder as index.html.';
+    status.textContent = 'Could not load leaderboard.TXT. Make sure it is uploaded to the same GitHub Pages folder as index.html.';
   }
 }
 
