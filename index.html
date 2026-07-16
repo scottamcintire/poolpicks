@@ -3,62 +3,318 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>McGowan’s U.S. Open Pool - Prize Estimator</title>
+<title>McGowan’s Open Championship Pool - Prize Estimator</title>
+
 <style>
-:root{--bg:#f5f1e8;--card:#fff;--ink:#1d2a22;--muted:#5d6b63;--accent:#1c6b43;--line:#d9d3c7;--soft:#f8f7f3}
-*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
-.wrap{max-width:1400px;margin:0 auto;padding:16px}
-h1{margin:0 0 8px;line-height:1.1}.subtitle{color:var(--muted);margin-bottom:18px;line-height:1.45;font-size:15px}
-.grid{display:grid;grid-template-columns:1.45fr 1fr;gap:18px;align-items:start}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}
-.card h2{margin:0;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--soft);font-size:20px;line-height:1.2}
-.participants-note{padding:10px 18px 0;color:var(--muted);font-size:12px}.participants{padding:10px 14px 18px}
-.participant{display:grid;grid-template-columns:1.1fr 2.3fr .75fr 1fr;gap:12px;padding:12px 8px;border-bottom:1px solid #ece7dd;align-items:start}
-.participant:last-child{border-bottom:0}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
-.p-name{font-weight:700}.p-golfers{line-height:1.4}.p-tb,.p-money{text-align:right;white-space:nowrap}
-.money-value{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}.right-col{display:grid;gap:18px}
-.inputs-wrap{padding:16px 18px 18px}.players-grid{display:grid;grid-template-columns:minmax(0,1fr) 80px 88px;gap:8px 10px;align-items:center}
-.players-grid .head{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-bottom:6px;border-bottom:1px solid #ece7dd;position:sticky;top:0;background:white;z-index:2}
-.player-name,.player-pct{padding:9px 0;border-bottom:1px dashed #ece7dd}.player-name{min-width:0;word-break:break-word}.player-pct{text-align:right;font-weight:700;color:var(--muted)}
-input.place-input,.payout-input{width:100%;padding:10px 8px;border:1px solid #cfc8bb;border-radius:8px;font-size:16px;min-height:42px;font-family:inherit}
-.payout-input{text-align:right;min-height:auto;padding:8px 8px}
-.place-input.loaded{background:#eef7f1;border-color:#8bb89d}
+:root{
+  --navy:#102a43;
+  --navy-2:#173f5f;
+  --cream:#f7f1df;
+  --paper:#fffdf7;
+  --red:#b7332c;
+  --gold:#c8a44d;
+  --green:#1f5a43;
+  --green-2:#2d7a5b;
+  --ink:#1f2a33;
+  --muted:#66737d;
+  --line:#d8cfbb;
+  --soft:#efe7d5;
+  --shadow:0 12px 30px rgba(16,42,67,.12);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  background:
+    linear-gradient(rgba(247,241,223,.92),rgba(247,241,223,.92)),
+    repeating-linear-gradient(45deg,#ede2c9 0 2px,transparent 2px 9px);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  display:block;
+  height:10px;
+  background:linear-gradient(90deg,var(--navy) 0 42%,var(--red) 42% 58%,var(--cream) 58% 74%,var(--navy) 74% 100%);
+  border-bottom:2px solid var(--gold);
+}
+.wrap{max-width:1450px;margin:0 auto;padding:18px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 12% 22%,rgba(255,255,255,.16) 0 2px,transparent 3px),
+    linear-gradient(135deg,var(--navy),var(--navy-2));
+  color:white;
+  border:2px solid var(--gold);
+  border-radius:18px;
+  padding:24px 28px 22px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  right:-35px;
+  top:-20px;
+  width:210px;
+  height:210px;
+  border:2px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  box-shadow:0 0 0 18px rgba(255,255,255,.05),0 0 0 38px rgba(255,255,255,.03);
+}
+.kicker{
+  display:inline-block;
+  color:#f8e8b0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-weight:800;
+  margin-bottom:8px;
+}
+h1{
+  margin:0 0 8px;
+  line-height:1.05;
+  font-size:clamp(30px,4vw,54px);
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+.subtitle{
+  color:#e7edf2;
+  margin:0;
+  line-height:1.5;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:15px;
+  max-width:920px;
+}
+.hero-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.badge{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:12px;
+  font-weight:700;
+}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;align-items:start}
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.card h2{
+  margin:0;
+  padding:15px 18px;
+  border-bottom:1px solid var(--line);
+  color:white;
+  background:
+    linear-gradient(90deg,var(--green),var(--green-2));
+  font-size:21px;
+  line-height:1.2;
+  letter-spacing:.01em;
+}
+.card h2:before{content:"⛳";margin-right:9px}
+.participants-note{
+  padding:12px 18px 0;
+  color:var(--muted);
+  font-size:12px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
+}
+.participants{padding:10px 14px 18px}
+.participant{
+  display:grid;
+  grid-template-columns:1.05fr 2.4fr .7fr 1fr;
+  gap:12px;
+  padding:13px 10px;
+  border-bottom:1px solid #e9e1d2;
+  align-items:start;
+  transition:transform .15s ease,background .15s ease;
+}
+.participant:hover{background:#fbf7ec;transform:translateX(2px)}
+.participant:last-child{border-bottom:0}
+.participant:nth-child(1){
+  background:linear-gradient(90deg,rgba(200,164,77,.18),transparent);
+  border-left:4px solid var(--gold);
+}
+.participant:nth-child(2){border-left:4px solid #b9bec4}
+.participant:nth-child(3){border-left:4px solid #b97a45}
+.label{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:3px
+}
+.p-name{font-weight:700;font-size:17px;color:var(--navy)}
+.p-golfers{line-height:1.45}
+.p-tb,.p-money{text-align:right;white-space:nowrap}
+.money-value{
+  font-weight:800;
+  color:var(--green);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-variant-numeric:tabular-nums
+}
+.right-col{display:grid;gap:18px}
+.inputs-wrap{padding:16px 18px 18px}
+.players-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 80px 88px;
+  gap:8px 10px;
+  align-items:center
+}
+.players-grid .head{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding-bottom:7px;
+  border-bottom:2px solid var(--gold);
+  position:sticky;
+  top:0;
+  background:var(--paper);
+  z-index:2
+}
+.player-name,.player-pct{padding:9px 0;border-bottom:1px dashed #dfd6c5}
+.player-name{min-width:0;word-break:break-word;font-weight:700;color:var(--navy)}
+.player-pct{
+  text-align:right;
+  font-weight:700;
+  color:var(--red);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
+}
+input.place-input,.payout-input{
+  width:100%;
+  padding:10px 8px;
+  border:1px solid #cfc4ad;
+  border-radius:8px;
+  font-size:16px;
+  min-height:42px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:#fffef9
+}
+input.place-input:focus,.payout-input:focus{
+  outline:3px solid rgba(200,164,77,.22);
+  border-color:var(--gold)
+}
+.place-input.loaded{background:#edf7f1;border-color:#7fb093}
 .controls{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-button{border:0;background:var(--accent);color:white;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;min-height:44px}
-button.secondary{background:#7d8b83}button.ghost{background:#dfe7e1;color:#193025}
-.small{color:var(--muted);font-size:13px;line-height:1.45;margin-top:10px}.top-note{padding:0 18px 18px;color:var(--muted);font-size:13px;line-height:1.45}
-.table-wrap{padding:0 18px 18px;max-height:520px;overflow:auto}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-th,td{border-bottom:1px solid #ece7dd;padding:10px 12px;text-align:left;vertical-align:middle}th:last-child,td:last-child{text-align:right}
-.status-box{margin-top:10px;padding:10px 12px;background:#f8f7f3;border:1px solid #e6e0d4;border-radius:8px;color:var(--muted);font-size:13px;line-height:1.4}
+button{
+  border:1px solid rgba(0,0,0,.08);
+  background:var(--navy);
+  color:white;
+  padding:12px 16px;
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer;
+  font-size:14px;
+  min-height:44px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  box-shadow:0 3px 0 rgba(0,0,0,.14)
+}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button.secondary{background:var(--red)}
+button.ghost{background:var(--soft);color:var(--navy)}
+.small,.top-note,.status-box{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
+}
+.small{color:var(--muted);font-size:13px;line-height:1.45;margin-top:10px}
+.top-note{padding:14px 18px 18px;color:var(--muted);font-size:13px;line-height:1.45}
+.table-wrap{padding:0 18px 18px;max-height:520px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid #ece4d4;padding:10px 12px;text-align:left;vertical-align:middle}
+th{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--navy);
+  background:#faf6eb;
+  position:sticky;
+  top:0;
+  z-index:1
+}
+th:last-child,td:last-child{text-align:right}
+.status-box{
+  margin-top:10px;
+  padding:11px 12px;
+  background:#f7f1df;
+  border:1px solid #dfd2b5;
+  border-left:4px solid var(--gold);
+  border-radius:8px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.4
+}
+.footer-note{
+  margin:18px 0 4px;
+  text-align:center;
+  color:var(--muted);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:12px
+}
 @media (max-width:1100px){.grid{grid-template-columns:1fr}}
 @media (max-width:760px){
-.wrap{padding:10px;max-width:100%} h1{font-size:24px}.subtitle{font-size:14px;margin-bottom:14px}.grid{display:flex;flex-direction:column}.right-col{order:0}.card{border-radius:12px}.card h2{font-size:18px;padding:13px 14px}
-.participants{padding:6px 8px 10px}.participants-note{padding:8px 12px 0}.participant{grid-template-columns:1fr;gap:8px;padding:12px 8px}.p-tb,.p-money{text-align:left;white-space:normal}
-.inputs-wrap{padding:12px}.players-grid{grid-template-columns:minmax(0,1fr) 68px 62px;gap:7px 8px}.players-grid .head{font-size:10px;letter-spacing:.03em;position:static;padding-bottom:5px}
-.player-name,.player-pct{font-size:13px;padding:8px 0}.player-pct{align-self:center} input.place-input,.payout-input{font-size:16px;min-height:42px;padding:8px 6px}
-.controls{position:sticky;bottom:0;background:linear-gradient(to top,rgba(255,255,255,.98),rgba(255,255,255,.94));padding-top:10px;padding-bottom:max(10px, env(safe-area-inset-bottom));margin-top:12px;border-top:1px solid #ece7dd}
-button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font-size:12px}.table-wrap{max-height:280px;padding:0 12px 12px}th,td{padding:9px 8px;font-size:14px}}
-@media (max-width:430px){.wrap{padding:8px}h1{font-size:22px}.subtitle{font-size:13px}.players-grid{grid-template-columns:minmax(0,1fr) 60px 54px;gap:6px 7px}.player-name,.player-pct{font-size:12px}.label{font-size:11px}.participant{padding:10px 4px}.money-value{font-size:18px}th,td{font-size:13px}}
-
-.last-updated-bar{
-  margin:0 0 16px;
-  padding:10px 14px;
-  background:#eef7f1;
-  border:1px solid #b9d8c4;
-  border-radius:10px;
-  color:var(--ink);
-  font-size:15px;
-  line-height:1.35;
+  .wrap{padding:10px;max-width:100%}
+  .hero{padding:18px 16px;border-radius:14px}
+  h1{font-size:30px}
+  .subtitle{font-size:14px}
+  .grid{display:flex;flex-direction:column}
+  .right-col{order:0}
+  .card{border-radius:12px}
+  .card h2{font-size:18px;padding:13px 14px}
+  .participants{padding:6px 8px 10px}
+  .participants-note{padding:8px 12px 0}
+  .participant{grid-template-columns:1fr;gap:8px;padding:12px 8px}
+  .p-tb,.p-money{text-align:left;white-space:normal}
+  .inputs-wrap{padding:12px}
+  .players-grid{grid-template-columns:minmax(0,1fr) 68px 62px;gap:7px 8px}
+  .players-grid .head{font-size:10px;letter-spacing:.03em;position:static;padding-bottom:5px}
+  .player-name,.player-pct{font-size:13px;padding:8px 0}
+  input.place-input,.payout-input{font-size:16px;min-height:42px;padding:8px 6px}
+  .controls{
+    position:sticky;
+    bottom:0;
+    background:linear-gradient(to top,rgba(255,253,247,.98),rgba(255,253,247,.94));
+    padding-top:10px;
+    padding-bottom:max(10px, env(safe-area-inset-bottom));
+    margin-top:12px;
+    border-top:1px solid #ece7dd
+  }
+  button{flex:1 1 100%;width:100%;font-size:15px}
+  .small,.top-note,.status-box{font-size:12px}
+  .table-wrap{max-height:280px;padding:0 12px 12px}
+  th,td{padding:9px 8px;font-size:14px}
 }
-.last-updated-bar strong{color:var(--accent)}
+@media (max-width:430px){
+  .wrap{padding:8px}
+  h1{font-size:27px}
+  .subtitle{font-size:13px}
+  .players-grid{grid-template-columns:minmax(0,1fr) 60px 54px;gap:6px 7px}
+  .player-name,.player-pct{font-size:12px}
+  .label{font-size:10px}
+  .participant{padding:10px 4px}
+  .money-value{font-size:18px}
+  th,td{font-size:13px}
+}
 </style>
+
 </head>
 <body>
 <div class="wrap">
-<h1>McGowan’s U.S. Open Pool - Prize Estimator</h1>
-<div class="subtitle">Manually change any golfer place or payout amount, and click recalculate. Prize calculations are estimated based on previous payouts. Results are not final until the commissioner has spoken.</div>
-<div class="last-updated-bar" id="lastUpdatedBar"><strong>Last updated:</strong> loading leaderboard.txt...</div>
+<header class="hero">
+  <div class="kicker">Links Golf • British Major • Pool Headquarters</div>
+  <h1>McGowan’s Open Championship Pool</h1>
+  <p class="subtitle">Enter or refresh golfer positions, adjust prize values, and recalculate the standings. Estimates remain unofficial until the commissioner has spoken.</p>
+  <div class="hero-badges">
+    <span class="badge">17 Entrants</span>
+    <span class="badge">5 Golfers Each</span>
+    <span class="badge">Tiebreaker: Winning Score</span>
+  </div>
+</header>
 <div class="grid">
 <section class="card">
 <h2>The Contenders</h2>
@@ -83,63 +339,21 @@ button{flex:1 1 100%;width:100%;font-size:15px}.small,.top-note,.status-box{font
 
 <section class="card">
 <h2>Estimated Prize Money by Place</h2>
-<div class="top-note">These payout amounts start prefilled with the current projected U.S. Open payout estimate. You can edit any value before recalculating. Places not listed here return $0.</div>
+<div class="top-note">These payout amounts start prefilled with the editable prize-money estimate. You can edit any value before recalculating. Places not listed here return $0.</div>
 <div class="table-wrap"><table><thead><tr><th>Place</th><th>Editable Prize</th></tr></thead><tbody id="payoutTable"></tbody></table></div>
 </section>
 </div>
 </div>
+<div class="footer-note">Built for links golf, leaderboard drama, and a proper Sunday finish.</div>
 </div>
 
 <script>
-const participants = [{"name":"McGowan","tiebreaker":-4,"golfers":["Scheffler","McIlroy","Rahm","Schauffele","Young"]},{"name":"Jardin","tiebreaker":-7,"golfers":["Scheffler","McIlroy","Rahm","Young","Fleetwood"]},{"name":"DiPaolo","tiebreaker":-6,"golfers":["Scheffler","McIlroy","Rahm","Henley","Fleetwood"]},{"name":"McIntire","tiebreaker":-1,"golfers":["Scheffler","McIlroy","Rahm","Fitzpatrick","Young"]},{"name":"O'Rourke","tiebreaker":-3,"golfers":["Scheffler","Rahm","Young","Fitzpatrick","Henley"]},{"name":"Morrison","tiebreaker":0,"golfers":["Scheffler","McIlroy","Rahm","Schauffele","Fleetwood"]},{"name":"Smith","tiebreaker":-2,"golfers":["Scheffler","McIlroy","Fitzpatrick","Schauffele","Young"]},{"name":"Guccione","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Schauffele","Young","Clark"]},{"name":"Sandman","tiebreaker":-4,"golfers":["Scheffler","McIlroy","Rahm","Young","Cameron Smith"]},{"name":"Welch","tiebreaker":-3,"golfers":["Scheffler","McIlroy","Rahm","Fleetwood","Fitzpatrick"]},{"name":"Susi","tiebreaker":-4,"golfers":["Scheffler","Rahm","DeChambeau","Koepka","Rose"]},{"name":"Rozynak","tiebreaker":-4,"golfers":["Scheffler","McIlroy","Young","Schauffele","Fleetwood"]},{"name":"Domski","tiebreaker":0,"golfers":["Scheffler","Fleetwood","Henley","Rai","Burns"]},{"name":"Enright","tiebreaker":-8,"golfers":["Scheffler","McIlroy","Rahm","Fleetwood","Fitzpatrick"]},{"name":"Picardi","tiebreaker":-3,"golfers":["Scheffler","McIlroy","Rahm","Schauffele","Young"]},{"name":"Lawrence","tiebreaker":-1,"golfers":["Scheffler","Schauffele","Fitzpatrick","Hatton","Young"]}];
+const participants = [{"name":"McGowan","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Gotterup"]},{"name":"Boli","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Rahm"]},{"name":"Welch","tiebreaker":-10,"golfers":["Fleetwood","McIlroy","Matt Fitzpatrick","Rose","Rahm"]},{"name":"McIntire","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Rose","Matt Fitzpatrick"]},{"name":"Sandman","tiebreaker":-4,"golfers":["Schauffele","Clark","McIlroy","Morikawa","Matt Fitzpatrick"]},{"name":"Lawrence","tiebreaker":-10,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Hatton","Schauffele"]},{"name":"Picardi","tiebreaker":-13,"golfers":["Scheffler","McIlroy","Fleetwood","Rahm","Matt Fitzpatrick"]},{"name":"Cardoza","tiebreaker":-10,"golfers":["Fleetwood","MacIntyre","Matt Fitzpatrick","Alex Fitzpatrick","McIlroy"]},{"name":"O'Rourke","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Rose","Hatton"]},{"name":"Morrison","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Schauffele","Aberg"]},{"name":"Malinowski","tiebreaker":-14,"golfers":["Scheffler","McIlroy","Rose","MacIntyre","Henley"]},{"name":"Susi","tiebreaker":-13,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Tom Kim","Gotterup"]},{"name":"Domski","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Hovland"]},{"name":"Guccione","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Schauffele","Henley","Rose"]},{"name":"Rozynak","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Rose"]},{"name":"Smith","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Matt Fitzpatrick","Rose"]},{"name":"Enright","tiebreaker":-14,"golfers":["Scheffler","Matt Fitzpatrick","McIlroy","Fleetwood","Clark"]}];
 const defaultPayouts = {"1":4500000,"2":2430000,"3":1512274,"4":1060158,"5":883010,"6":782952,"7":705863,"8":632183,"9":572149,"10":525531,"11":479595,"12":443437,"13":413193,"14":381356,"15":354068,"16":331328,"17":313135,"18":294943,"19":276750,"20":258558,"21":242867,"22":227177,"23":211941,"24":197841,"25":185561,"26":175101,"27":167142,"28":160092,"29":153270,"30":146448,"31":139626,"32":132803,"33":125981,"34":119841,"35":114839,"36":109836,"37":105060,"38":100512,"39":95964,"40":91416,"41":86868,"42":82320,"43":77772,"44":73223,"45":68675,"46":64582,"47":60489,"48":56624,"49":54350,"50":52075,"51":50711,"52":49573,"53":48664,"54":48210,"55":47754,"56":47299,"57":46845,"58":46390,"59":45936,"60":45480};
-const players = ["Burns","Cameron Smith","Clark","DeChambeau","Fitzpatrick","Fleetwood","Hatton","Henley","Koepka","McIlroy","Rahm","Rai","Rose","Schauffele","Scheffler","Young"];
-const pickPct = {"Burns":6,"Cameron Smith":6,"Clark":6,"DeChambeau":6,"Fitzpatrick":38,"Fleetwood":44,"Hatton":6,"Henley":19,"Koepka":6,"McIlroy":75,"Rahm":69,"Rai":6,"Rose":6,"Schauffele":44,"Scheffler":100,"Young":63};
+const players = ["Aberg","Alex Fitzpatrick","Clark","Fleetwood","Gotterup","Hatton","Henley","Hovland","MacIntyre","Matt Fitzpatrick","McIlroy","Morikawa","Rahm","Rose","Schauffele","Scheffler","Tom Kim"];
+const pickPct = {"Aberg":6,"Alex Fitzpatrick":6,"Clark":12,"Fleetwood":71,"Gotterup":12,"Hatton":12,"Henley":12,"Hovland":6,"MacIntyre":12,"Matt Fitzpatrick":76,"McIlroy":88,"Morikawa":6,"Rahm":18,"Rose":41,"Schauffele":35,"Scheffler":82,"Tom Kim":6};
 
-const playerAliases = {
-  "scheffler": "Scheffler",
-  "scottie scheffler": "Scheffler",
-  "scottie": "Scheffler",
-  "mcilroy": "McIlroy",
-  "rory mcilroy": "McIlroy",
-  "rory": "McIlroy",
-  "rahm": "Rahm",
-  "jon rahm": "Rahm",
-  "schauffele": "Schauffele",
-  "xander schauffele": "Schauffele",
-  "xander": "Schauffele",
-  "young": "Young",
-  "cam young": "Young",
-  "cameron young": "Young",
-  "fleetwood": "Fleetwood",
-  "tommy fleetwood": "Fleetwood",
-  "henley": "Henley",
-  "russell henley": "Henley",
-  "m fitzpatrick": "Fitzpatrick",
-  "m. fitzpatrick": "Fitzpatrick",
-  "fitzpatrick": "Fitzpatrick",
-  "matt fitzpatrick": "Fitzpatrick",
-  "matthew fitzpatrick": "Fitzpatrick",
-  "clark": "Clark",
-  "wyndham clark": "Clark",
-  "dechambeau": "DeChambeau",
-  "bryson dechambeau": "DeChambeau",
-  "bryson": "DeChambeau",
-  "koepka": "Koepka",
-  "brooks koepka": "Koepka",
-  "brooks": "Koepka",
-  "rose": "Rose",
-  "justin rose": "Rose",
-  "cameron smith": "Cameron Smith",
-  "cam smith": "Cameron Smith",
-  "rai": "Rai",
-  "aaron rai": "Rai",
-  "burns": "Burns",
-  "sam burns": "Burns",
-  "hatton": "Hatton",
-  "tyrrell hatton": "Hatton",
-  "tyrell hatton": "Hatton"
-};
+const playerAliases = {"scheffler":"Scheffler","scottie scheffler":"Scheffler","scottie":"Scheffler","mcilroy":"McIlroy","rory mcilroy":"McIlroy","rory":"McIlroy","rahm":"Rahm","jon rahm":"Rahm","schauffele":"Schauffele","xander schauffele":"Schauffele","xander":"Schauffele","fleetwood":"Fleetwood","tommy fleetwood":"Fleetwood","henley":"Henley","russell henley":"Henley","m fitzpatrick":"Matt Fitzpatrick","m. fitzpatrick":"Matt Fitzpatrick","matt fitzpatrick":"Matt Fitzpatrick","matthew fitzpatrick":"Matt Fitzpatrick","fitzpatrick":"Matt Fitzpatrick","a fitzpatrick":"Alex Fitzpatrick","a. fitzpatrick":"Alex Fitzpatrick","alex fitzpatrick":"Alex Fitzpatrick","clark":"Clark","wyndham clark":"Clark","rose":"Rose","justin rose":"Rose","hatton":"Hatton","tyrrell hatton":"Hatton","tyrell hatton":"Hatton","gotterup":"Gotterup","chris gotterup":"Gotterup","morikawa":"Morikawa","collin morikawa":"Morikawa","macintyre":"MacIntyre","robert macintyre":"MacIntyre","bob macintyre":"MacIntyre","mcintyre":"MacIntyre","mcintire":"MacIntyre","hovland":"Hovland","viktor hovland":"Hovland","tom kim":"Tom Kim","t kim":"Tom Kim","t. kim":"Tom Kim","a berg":"Aberg","aberg":"Aberg","åberg":"Aberg","ludvig aberg":"Aberg","ludvig åberg":"Aberg"};
 
 function fmtMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v||0)}
 function fmtScore(v){ const n = Number(v); return n === 0 ? 'E' : (n > 0 ? `+${n}` : String(n)); }
@@ -301,31 +515,12 @@ function clearPlaces(){
   getStatusEl().textContent = 'Golfer places cleared.';
 }
 
-
-function parseLastUpdatedText(text){
-  const lines = String(text).split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  for(const line of lines){
-    const match = line.match(/^(?:#\s*)?(?:updated|last updated|as of)\s*(?:=|:|-)?\s*(.+)$/i);
-    if(match && match[1].trim()) return match[1].trim();
-  }
-  return null;
-}
-function setLastUpdatedBar(value){
-  const el = document.getElementById('lastUpdatedBar');
-  if(!el) return;
-  el.innerHTML = value
-    ? `<strong>Last updated:</strong> ${value}`
-    : `<strong>Last updated:</strong> not provided in leaderboard.txt`;
-}
-
 function parseLeaderboardText(text){
   const lines = String(text).split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
   const foundMap = {};
   const unmatched = [];
   lines.forEach(line=>{
-    if(line.startsWith('//')) return;
-    if(/^(?:#\s*)?(?:updated|last updated|as of)\s*(?:=|:|-)?\s*.+$/i.test(line)) return;
-    if(line.startsWith('#')) return;
+    if(line.startsWith('#') || line.startsWith('//')) return;
     if(/^[-–—]+$/.test(line)) return;
 
     let place = null;
@@ -389,7 +584,6 @@ async function loadLeaderboardFile(){
     const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
-    setLastUpdatedBar(parseLastUpdatedText(text));
     const {foundMap, unmatched} = parseLeaderboardText(text);
     applyPlaces(foundMap);
     renderParticipants();
@@ -398,7 +592,6 @@ async function loadLeaderboardFile(){
     if(unmatched.length) msg += ` ${unmatched.length} line${unmatched.length===1?' was':'s were'} ignored.`;
     status.textContent = msg;
   }catch(err){
-    setLastUpdatedBar(null);
     status.textContent = 'Could not load leaderboard.txt. Make sure it is uploaded to the same GitHub Pages folder as index.html.';
   }
 }
