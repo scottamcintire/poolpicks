@@ -319,6 +319,23 @@ th:last-child,td:last-child{text-align:right}
 .rank-badge{display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:27px;padding:0 7px;border-radius:999px;margin-right:7px;background:var(--navy);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:12px;font-weight:800;vertical-align:middle}
 @media (max-width:760px){.dashboard{grid-template-columns:1fr}}
 
+
+.hero-last-updated{
+  position:absolute;
+  right:18px;
+  bottom:10px;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:12px;
+  font-weight:600;
+  text-align:right;
+  z-index:2;
+}
+@media (max-width:760px){
+  .hero{padding-bottom:42px}
+  .hero-last-updated{right:14px;bottom:10px;font-size:11px}
+}
+
 </style>
 
 </head>
@@ -333,6 +350,7 @@ th:last-child,td:last-child{text-align:right}
     <span class="badge">5 Golfers Each</span>
     <span class="badge">Tiebreaker: Winning Score</span>
   </div>
+<div class="hero-last-updated" id="lastUpdatedStamp">Last updated: —</div>
 </header>
 
 <section class="dashboard">
@@ -662,6 +680,21 @@ async function loadLeaderboardFile(){
     const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
+
+    const stampEl = document.getElementById('lastUpdatedStamp');
+    if(stampEl){
+      const modifiedHeader = response.headers.get('Last-Modified');
+      const stampDate = modifiedHeader ? new Date(modifiedHeader) : new Date();
+      stampEl.textContent = 'Last updated: ' + stampDate.toLocaleString('en-US', {
+        month:'numeric',
+        day:'numeric',
+        year:'numeric',
+        hour:'numeric',
+        minute:'2-digit',
+        timeZoneName:'short'
+      });
+    }
+
     const {foundMap, unmatched} = parseLeaderboardText(text);
     applyPlaces(foundMap);
     renderParticipants();
