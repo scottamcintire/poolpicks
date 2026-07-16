@@ -321,21 +321,18 @@ th:last-child,td:last-child{text-align:right}
 
 
 .hero-last-updated{
-  position:absolute;
-  right:18px;
-  bottom:10px;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  font-size:12px;
-  font-weight:600;
-  text-align:right;
-  z-index:2;
+ position:absolute;
+ right:18px;
+ bottom:10px;
+ color:#fff;
+ font:600 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ z-index:5;
+ text-align:right;
 }
 @media (max-width:760px){
-  .hero{padding-bottom:42px}
-  .hero-last-updated{right:14px;bottom:10px;font-size:11px}
+ .hero{padding-bottom:42px}
+ .hero-last-updated{font-size:11px;right:14px;bottom:10px}
 }
-
 </style>
 
 </head>
@@ -616,6 +613,7 @@ function parseLeaderboardText(text){
   const foundMap = {};
   const unmatched = [];
   lines.forEach(line=>{
+    if(/^Updated\s*:/i.test(line)) return;
     if(line.startsWith('#') || line.startsWith('//')) return;
     if(/^[-–—]+$/.test(line)) return;
 
@@ -680,21 +678,15 @@ async function loadLeaderboardFile(){
     const response = await fetch('leaderboard.txt?ts=' + Date.now(), {cache:'no-store'});
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
-
-    const stampEl = document.getElementById('lastUpdatedStamp');
-    if(stampEl){
-      const modifiedHeader = response.headers.get('Last-Modified');
-      const stampDate = modifiedHeader ? new Date(modifiedHeader) : new Date();
-      stampEl.textContent = 'Last updated: ' + stampDate.toLocaleString('en-US', {
-        month:'numeric',
-        day:'numeric',
-        year:'numeric',
-        hour:'numeric',
-        minute:'2-digit',
-        timeZoneName:'short'
-      });
+    const stamp=document.getElementById('lastUpdatedStamp');
+    if(stamp){
+      const m=/^Updated:\s*(.+)$/mi.exec(text);
+      if(m){
+        stamp.textContent='Last updated: '+m[1].trim();
+      }else{
+        stamp.textContent='Last updated: (not found in leaderboard.txt)';
+      }
     }
-
     const {foundMap, unmatched} = parseLeaderboardText(text);
     applyPlaces(foundMap);
     renderParticipants();
