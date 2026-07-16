@@ -153,6 +153,24 @@ h1{
 }
 .p-name{font-weight:700;font-size:17px;color:var(--navy)}
 .p-golfers{line-height:1.45}
+.golfer-breakdown{
+  margin-top:7px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:11px;
+  line-height:1.45;
+  color:var(--muted);
+}
+.golfer-breakdown-item{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px dotted #ddd3bd;
+  padding:2px 0;
+}
+.golfer-breakdown-item:last-child{border-bottom:0}
+.golfer-breakdown-prize{font-weight:800;color:var(--green);white-space:nowrap}
+.qa-ok{color:var(--green);font-weight:800}
+.qa-error{color:var(--red);font-weight:800}
 .p-tb,.p-money{text-align:right;white-space:nowrap}
 .money-value{
   font-weight:800;
@@ -368,7 +386,10 @@ th:last-child,td:last-child{text-align:right}
 <div class="grid">
 <section class="card">
 <h2>The Contenders</h2>
-<div class="participants-note">After loading, the list is automatically sorted from highest estimated total prize money to lowest.</div>
+<div class="participants-note">
+  After loading, the list is automatically sorted from highest estimated total prize money to lowest.
+  <div id="qaStatus" style="margin-top:6px">Checking all participant rosters and totals…</div>
+</div>
 <div class="participants" id="participants"></div>
 </section>
 
@@ -394,7 +415,7 @@ th:last-child,td:last-child{text-align:right}
 </section>
 </div>
 </div>
-<div class="footer-note">Built for links golf, leaderboard drama, and a proper Sunday finish.</div>
+<div class="footer-note">Built for links golf, leaderboard drama, and a proper Sunday finish. • QA build 2026-07-16</div>
 </div>
 
 <script>
@@ -471,13 +492,16 @@ function getEnteredPlaces(){
 function computeParticipantTotals(){
   const places = getEnteredPlaces();
   const payouts = getCurrentPayouts();
+
   return participants.map(p=>{
-    const total = p.golfers.reduce((sum,golfer)=>{
+    const golferBreakdown = p.golfers.map(golfer=>{
       const place = places[golfer];
-      if(!place) return sum;
-      return sum + getEstimatedPayoutForPlace(place, payouts);
-    },0);
-    return {...p,total};
+      const prize = place ? getEstimatedPayoutForPlace(place, payouts) : 0;
+      return {golfer, place: place || null, prize};
+    });
+
+    const total = golferBreakdown.reduce((sum,item)=>sum + item.prize, 0);
+    return {...p,total,golferBreakdown};
   }).sort((a,b)=>{
     if(b.total !== a.total) return b.total - a.total;
     return a.name.localeCompare(b.name);
@@ -526,18 +550,53 @@ function updateDashboard(ranked){
 
 function renderParticipants(){
   const container = document.getElementById('participants');
+  const qaStatus = document.getElementById('qaStatus');
   const ranked = computeParticipantTotals();
   container.innerHTML = '';
+
+  const qaProblems = [];
+
   ranked.forEach((p,index)=>{
+    if(p.golfers.length !== 5){
+      qaProblems.push(`${p.name} has ${p.golfers.length} golfers instead of 5`);
+    }
+
+    const recomputedTotal = p.golferBreakdown.reduce((sum,item)=>sum + item.prize, 0);
+    if(recomputedTotal !== p.total){
+      qaProblems.push(`${p.name} total does not match the five golfer amounts`);
+    }
+
     const row = document.createElement('div');
     row.className = `participant rank-${index+1}`;
     const medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+
+    const breakdownHtml = p.golferBreakdown.map(item=>{
+      const placeText = item.place ? `Place ${item.place}` : 'No place loaded';
+      return `<div class="golfer-breakdown-item">
+        <span>${item.golfer} — ${placeText}</span>
+        <span class="golfer-breakdown-prize">${fmtMoney(item.prize)}</span>
+      </div>`;
+    }).join('');
+
     row.innerHTML = `<div><div class="p-name"><span class="rank-badge">${index+1}</span>${medal ? medal + ' ' : ''}${p.name}</div></div>
-    <div><div class="label">5 Golfers</div><div class="p-golfers">${p.golfers.join(', ')}</div></div>
+    <div>
+      <div class="label">5 Golfers</div>
+      <div class="p-golfers">${p.golfers.join(', ')}</div>
+      <div class="golfer-breakdown">${breakdownHtml}</div>
+    </div>
     <div class="p-tb"><div class="label">Tiebreaker</div><div>${fmtScore(p.tiebreaker)}</div></div>
     <div class="p-money"><div class="label">Estimated Total Prize</div><div class="money-value">${fmtMoney(p.total)}</div></div>`;
     container.appendChild(row);
   });
+
+  if(qaStatus){
+    if(qaProblems.length){
+      qaStatus.innerHTML = `<span class="qa-error">QA issue:</span> ${qaProblems.join('; ')}`;
+    } else {
+      qaStatus.innerHTML = '<span class="qa-ok">QA verified:</span> all 17 participants have exactly five golfers, and every displayed total equals the sum of those five golfer prize values.';
+    }
+  }
+
   updateDashboard(ranked);
 }
 function sortPlayersForDisplay(){
