@@ -305,6 +305,14 @@ th:last-child,td:last-child{text-align:right}
 .mini-card{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
 .mini-label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:800;margin-bottom:6px}
 .mini-value{color:var(--navy);font-size:18px;font-weight:800;line-height:1.25}
+.danger-card{border-top-color:var(--red)}
+.cut-watch{font-size:15px;line-height:1.45}
+.cut-item{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px dashed #ddd3bd}
+.cut-item:last-child{border-bottom:0}
+.cut-status{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.cut-status.outside{color:var(--red)}
+.cut-status.bubble{color:#9a6a10}
+.cut-safe{color:var(--green);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:13px}
 .participant.rank-1{background:linear-gradient(90deg,rgba(200,164,77,.24),transparent);border-left:5px solid #c8a44d}
 .participant.rank-2{background:linear-gradient(90deg,rgba(185,190,196,.20),transparent);border-left:5px solid #aeb5bd}
 .participant.rank-3{background:linear-gradient(90deg,rgba(185,122,69,.18),transparent);border-left:5px solid #b97a45}
@@ -319,7 +327,7 @@ th:last-child,td:last-child{text-align:right}
 <header class="hero">
   <div class="kicker">Links Golf • British Major • Pool Headquarters</div>
   <h1>McGowan’s Open Championship Pool</h1>
-  <p class="subtitle">Enter or refresh golfer positions, adjust the 2025 Open Championship prize values, and recalculate the standings. Ties are not automatically split, so estimates remain unofficial until the commissioner has spoken.</p>
+  <p class="subtitle">Enter or refresh golfer positions, adjust the 2025 Open Championship prize values, and recalculate the standings. Ties are not automatically split, and the cut watch uses leaderboard position as an approximation of the top-70-and-ties cut.</p>
   <div class="hero-badges">
     <span class="badge">17 Entrants</span>
     <span class="badge">5 Golfers Each</span>
@@ -328,9 +336,18 @@ th:last-child,td:last-child{text-align:right}
 </header>
 
 <section class="dashboard">
-  <div class="mini-card"><div class="mini-label">Current Leader</div><div class="mini-value" id="currentLeader">—</div></div>
-  <div class="mini-card"><div class="mini-label">Most Valuable Pick</div><div class="mini-value" id="mvpPick">—</div></div>
-  <div class="mini-card"><div class="mini-label">Highest-Owned Golfer</div><div class="mini-value" id="chalkPick">—</div></div>
+  <div class="mini-card">
+    <div class="mini-label">Current Leader</div>
+    <div class="mini-value" id="currentLeader">—</div>
+  </div>
+  <div class="mini-card">
+    <div class="mini-label">Most Valuable Pick</div>
+    <div class="mini-value" id="mvpPick">—</div>
+  </div>
+  <div class="mini-card danger-card">
+    <div class="mini-label">Cut-Line Watch</div>
+    <div class="mini-value cut-watch" id="cutWatch">Awaiting scores</div>
+  </div>
 </section>
 
 <div class="grid">
@@ -366,7 +383,7 @@ th:last-child,td:last-child{text-align:right}
 </div>
 
 <script>
-const participants = [{"name":"McGowan","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Gotterup"]},{"name":"Boli","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Rahm"]},{"name":"Welch","tiebreaker":-10,"golfers":["Fleetwood","McIlroy","Matt Fitzpatrick","Rose","Rahm"]},{"name":"McIntire","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Rose","Matt Fitzpatrick"]},{"name":"Sandman","tiebreaker":-10,"golfers":["Schauffele","Clark","McIlroy","Morikawa","Matt Fitzpatrick"]},{"name":"Lawrence","tiebreaker":-10,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Hatton","Schauffele"]},{"name":"Picardi","tiebreaker":-13,"golfers":["Scheffler","McIlroy","Fleetwood","Rahm","Matt Fitzpatrick"]},{"name":"Cardoza","tiebreaker":-10,"golfers":["Fleetwood","MacIntyre","Matt Fitzpatrick","Alex Fitzpatrick","McIlroy"]},{"name":"O'Rourke","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Rose","Hatton"]},{"name":"Morrison","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Schauffele","Aberg"]},{"name":"Malinowski","tiebreaker":-14,"golfers":["Scheffler","McIlroy","Rose","MacIntyre","Henley"]},{"name":"Susi","tiebreaker":-13,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Tom Kim","Gotterup"]},{"name":"Domski","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Hovland"]},{"name":"Guccione","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Schauffele","Henley","Rose"]},{"name":"Rozynak","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Rose"]},{"name":"Smith","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Matt Fitzpatrick","Rose"]},{"name":"Enright","tiebreaker":-14,"golfers":["Scheffler","Matt Fitzpatrick","McIlroy","Fleetwood","Clark"]}];
+const participants = [{"name":"McGowan","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Gotterup"]},{"name":"Boli","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Fleetwood","Rahm"]},{"name":"Welch","tiebreaker":-10,"golfers":["Fleetwood","McIlroy","Matt Fitzpatrick","Rose","Rahm"]},{"name":"McIntire","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Rose","Matt Fitzpatrick"]},{"name":"Sandman","tiebreaker":-10,"golfers":["Schauffele","Clark","McIlroy","Morikawa","Matt Fitzpatrick"]},{"name":"Lawrence","tiebreaker":-10,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Hatton","Schauffele"]},{"name":"Picardi","tiebreaker":-13,"golfers":["Scheffler","McIlroy","Fleetwood","Rahm","Matt Fitzpatrick"]},{"name":"Cardoza","tiebreaker":-10,"golfers":["Fleetwood","MacIntyre","Matt Fitzpatrick","Alex Fitzpatrick","McIlroy"]},{"name":"O'Rourke","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Rose","Hatton"]},{"name":"Morrison","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Matt Fitzpatrick","Schauffele","Aberg"]},{"name":"Malinowski","tiebreaker":-14,"golfers":["Scheffler","McIlroy","Rose","MacIntyre","Henley"]},{"name":"Susi","tiebreaker":-13,"golfers":["Scheffler","Fleetwood","Matt Fitzpatrick","Tom Kim","Gotterup"]},{"name":"Domski","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Hovland"]},{"name":"Guccione","tiebreaker":-10,"golfers":["Scheffler","McIlroy","Schauffele","Henley","Rose"]},{"name":"Gary Roz","tiebreaker":-15,"golfers":["Scheffler","McIlroy","Schauffele","Fleetwood","Rose"]},{"name":"Smith","tiebreaker":-12,"golfers":["Scheffler","McIlroy","Fleetwood","Matt Fitzpatrick","Rose"]},{"name":"Enright","tiebreaker":-14,"golfers":["Scheffler","Matt Fitzpatrick","McIlroy","Fleetwood","Clark"]}];
 const defaultPayouts = {"1":3100000,"2":1759000,"3":1128000,"4":876000,"5":705000,"6":611000,"7":525000,"8":442500,"9":388000,"10":350600,"11":319200,"12":282800,"13":266000,"14":248300,"15":230500,"16":212800,"17":203900,"18":195100,"19":186200,"20":177300};
 const players = ["Aberg","Alex Fitzpatrick","Clark","Fleetwood","Gotterup","Hatton","Henley","Hovland","MacIntyre","Matt Fitzpatrick","McIlroy","Morikawa","Rahm","Rose","Schauffele","Scheffler","Tom Kim"];
 const pickPct = {"Aberg":6,"Alex Fitzpatrick":6,"Clark":12,"Fleetwood":71,"Gotterup":12,"Hatton":12,"Henley":12,"Hovland":6,"MacIntyre":12,"Matt Fitzpatrick":76,"McIlroy":88,"Morikawa":6,"Rahm":18,"Rose":41,"Schauffele":35,"Scheffler":82,"Tom Kim":6};
@@ -432,8 +449,11 @@ function computeParticipantTotals(){
 function updateDashboard(ranked){
   const leaderEl = document.getElementById('currentLeader');
   const mvpEl = document.getElementById('mvpPick');
-  const chalkEl = document.getElementById('chalkPick');
-  if(leaderEl) leaderEl.textContent = ranked.length ? `${ranked[0].name} — ${fmtMoney(ranked[0].total)}` : '—';
+  const cutEl = document.getElementById('cutWatch');
+
+  if(leaderEl){
+    leaderEl.textContent = ranked.length ? `${ranked[0].name} — ${fmtMoney(ranked[0].total)}` : '—';
+  }
 
   const places = getEnteredPlaces();
   const payouts = getCurrentPayouts();
@@ -447,9 +467,23 @@ function updateDashboard(ranked){
     const top = golferValues[0];
     mvpEl.textContent = top && top.prize ? `${top.player} — ${fmtMoney(top.prize)}` : 'Awaiting scores';
   }
-  if(chalkEl){
-    const chalk = [...players].sort((a,b)=>(pickPct[b]||0)-(pickPct[a]||0) || a.localeCompare(b))[0];
-    chalkEl.textContent = chalk ? `${chalk} — ${pickPct[chalk]}%` : '—';
+
+  if(cutEl){
+    const danger = players
+      .map(player=>({player, place:places[player]}))
+      .filter(item=>item.place && item.place >= 55)
+      .sort((a,b)=>b.place-a.place || a.player.localeCompare(b.player));
+
+    if(!danger.length){
+      cutEl.innerHTML = '<span class="cut-safe">No selected golfers are currently near or outside the projected top-70 cut.</span>';
+    } else {
+      cutEl.innerHTML = danger.map(item=>{
+        const outside = item.place > 70;
+        const status = outside ? 'Outside cut' : 'On bubble';
+        const cls = outside ? 'outside' : 'bubble';
+        return `<div class="cut-item"><span>${item.player} — T${item.place}</span><span class="cut-status ${cls}">${status}</span></div>`;
+      }).join('');
+    }
   }
 }
 
