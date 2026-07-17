@@ -1,21 +1,22 @@
-Updated: Friday 7/17, 2:00 PM ET
+Updated: Thursday 7/17, 2:30 PM ET
 
-Scheffler = T10
-McIlroy = T65
-Rahm = T22
-Schauffele = T40
-Fleetwood = T22
-Henley = T40
-Matt Fitzpatrick = T65
-Clark = T93
-Rose = T140
-Hatton = T22
-Morikawa = T10
-Gotterup = T40
-MacIntyre = T3
-Alex Fitzpatrick = T22
-Tom Kim = T40
-Hovland = T40
+MacIntyre = T6
+Alex Fitzpatrick = T6
+Scheffler = T6
 Aberg = T65
+Rahm = T14
+Gotterup = T24
+Morikawa = T24
+McIlroy = T37
+Hatton = T38
+Schauffele = T50
+Fleetwood = T22
+Henley = T50
+Matt Fitzpatrick = T112
+Clark = T99
+Rose = T99
+Tom Kim = T99
+Hovland = T112
+
 
 URL for scores https://www.theopen.com/leaderboard
