@@ -1,22 +1,21 @@
-Updated: Thursday 7/17, 2:30 PM ET
+Updated: Friday 7/17, 9:05 PM ET
 
-MacIntyre = T6
-Alex Fitzpatrick = T6
-Scheffler = T6
-Aberg = T65
-Rahm = T14
-Gotterup = T24
-Morikawa = T24
-McIlroy = T37
-Hatton = T38
-Schauffele = T50
-Fleetwood = T22
-Henley = T50
-Matt Fitzpatrick = T112
-Clark = T99
-Rose = T99
-Tom Kim = T99
-Hovland = T112
+Scheffler = T8
+McIlroy = T38
+Rahm = T8
+Schauffele = T52
+Fleetwood = T8
+Henley = T67
+Matt Fitzpatrick = CUT
+Clark = CUT
+Rose = CUT
+Hatton = T17
+Morikawa = T25
+Gotterup = T25
+MacIntyre = T8
+Alex Fitzpatrick = T8
+Tom Kim = CUT
+Hovland = CUT
+Aberg = T17
 
-
-URL for scores https://www.theopen.com/leaderboard
+URL for scores https://www.espn.com/golf/leaderboard
