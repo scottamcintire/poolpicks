@@ -19,26 +19,28 @@ details summary{cursor:pointer;font-weight:700;color:var(--accent)}.weekbox{marg
 <header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker</p></header><main>
 <div class="cards"><div class="card"><div class="label">Leader</div><div class="big" id="leader"></div></div>
 <div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div>
-<div class="card"><div class="label">Current Week</div><div class="big">Week 2</div><div class="pending">Week 2 scoring pending</div></div></div>
+<div class="card"><div class="label">Current Week</div><div class="big">Week 2</div><div class="pending">49ers, Bills & Bears final • Chiefs pending</div></div></div>
 <div class="tablewrap"><table><thead><tr><th>Rank</th><th>Participant</th><th>Total Points</th><th>Behind</th><th>Current Pick</th><th>Teams Used</th><th>Teams Available</th><th>History</th></tr></thead><tbody id="body"></tbody></table></div>
 <div class="weekbox"><div class="label">Week 2 Pick Popularity</div><div class="pop" id="pop"></div></div>
-<p class="note">Totals currently include Week 1 only because the photographed sheet contains Week 2 picks but not Week 2 final scores. Once Week 2 scores are entered, totals and rankings recalculate automatically.</p>
+<p class="note">Week 2 updated through 7:17 PM ET: Bills 41, 49ers 35, Bears 3. The Chiefs game has not started, so Enright's displayed total is provisional and marked with an asterisk.</p>
 </main><script>
-const players=[{"name": "Beshta", "w1": "Jaguars", "w2": "49ers", "w1pts": 34}, {"name": "Guccione", "w1": "Jaguars", "w2": "49ers", "w1pts": 34}, {"name": "DiSercina", "w1": "Jaguars", "w2": "Bills", "w1pts": 34}, {"name": "Susi", "w1": "Bengals", "w2": "49ers", "w1pts": 33}, {"name": "Boli", "w1": "Lions", "w2": "Bills", "w1pts": 31}, {"name": "Rozynak", "w1": "Lions", "w2": "Bears", "w1pts": 31}, {"name": "McGowon", "w1": "Lions", "w2": "Bills", "w1pts": 31}, {"name": "Pooveked", "w1": "Lions", "w2": "Bills", "w1pts": 31}, {"name": "Rollins", "w1": "Lions", "w2": "Bills", "w1pts": 31}, {"name": "S. McIntire", "w1": "Lions", "w2": "49ers", "w1pts": 31}, {"name": "Morrison", "w1": "Bucs", "w2": "Bills", "w1pts": 27}, {"name": "O'Rourke", "w1": "Eagles", "w2": "49ers", "w1pts": 24}, {"name": "Enright", "w1": "Cowboys", "w2": "Chiefs", "w1pts": 20}, {"name": "Sandman", "w1": "Chargers", "w2": "49ers", "w1pts": 14}, {"name": "Smith", "w1": "Chargers", "w2": "Bills", "w1pts": 14}, {"name": "Domski", "w1": "Chargers", "w2": "49ers", "w1pts": 14}, {"name": "Picardi", "w1": "Chargers", "w2": "Bills", "w1pts": 14}, {"name": "B. McIntire", "w1": "Chargers", "w2": "Bills", "w1pts": 14}, {"name": "Leonard", "w1": "Rams", "w2": "Bears", "w1pts": 7}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
+const players=[{"name": "Beshta", "w1": "Jaguars", "w2": "49ers", "w1pts": 34, "w2pts": 35}, {"name": "Guccione", "w1": "Jaguars", "w2": "49ers", "w1pts": 34, "w2pts": 35}, {"name": "DiSercina", "w1": "Jaguars", "w2": "Bills", "w1pts": 34, "w2pts": 41}, {"name": "Susi", "w1": "Bengals", "w2": "49ers", "w1pts": 33, "w2pts": 35}, {"name": "Boli", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "Rozynak", "w1": "Lions", "w2": "Bears", "w1pts": 31, "w2pts": 3}, {"name": "McGowon", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "Pooveked", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "Rollins", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "S. McIntire", "w1": "Lions", "w2": "49ers", "w1pts": 31, "w2pts": 35}, {"name": "Morrison", "w1": "Bucs", "w2": "Bills", "w1pts": 27, "w2pts": 41}, {"name": "O'Rourke", "w1": "Eagles", "w2": "49ers", "w1pts": 24, "w2pts": 35}, {"name": "Enright", "w1": "Cowboys", "w2": "Chiefs", "w1pts": 20, "w2pts": null}, {"name": "Sandman", "w1": "Chargers", "w2": "49ers", "w1pts": 14, "w2pts": 35}, {"name": "Smith", "w1": "Chargers", "w2": "Bills", "w1pts": 14, "w2pts": 41}, {"name": "Domski", "w1": "Chargers", "w2": "49ers", "w1pts": 14, "w2pts": 35}, {"name": "Picardi", "w1": "Chargers", "w2": "Bills", "w1pts": 14, "w2pts": 41}, {"name": "B. McIntire", "w1": "Chargers", "w2": "Bills", "w1pts": 14, "w2pts": 41}, {"name": "Leonard", "w1": "Rams", "w2": "Bears", "w1pts": 7, "w2pts": 3}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
 const esc=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;");
 function render(){
- let sorted=[...players].sort((a,b)=>b.w1pts-a.w1pts||a.name.localeCompare(b.name)), lead=sorted[0].w1pts;
- document.getElementById("leader").textContent=sorted.filter(x=>x.w1pts===lead).map(x=>x.name).join(", ");
+ players.forEach(p=>p.total=p.w1pts+(p.w2pts??0));
+ let sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name)), lead=sorted[0].total;
+ document.getElementById("leader").textContent=sorted.filter(x=>x.total===lead).map(x=>x.name).join(", ");
  document.getElementById("leadpts").textContent=lead;
  let last=null,rank=0;
  document.getElementById("body").innerHTML=sorted.map((p,i)=>{
-   if(p.w1pts!==last){rank=i+1;last=p.w1pts}
+   if(p.total!==last){rank=i+1;last=p.total}
    let used=[p.w1,p.w2], av=allTeams.filter(t=>!used.includes(t));
-   return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.w1pts}</td>
-   <td class=num>${lead-p.w1pts===0?"—":"-"+(lead-p.w1pts)}</td><td><span class="badge current">${p.w2}</span></td>
+   let w2display=p.w2pts==null?"pending":p.w2pts+" pts";
+   return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}${p.w2pts==null?'*':''}</td>
+   <td class=num>${lead-p.total===0?"—":"-"+(lead-p.total)}</td><td><span class="badge current">${p.w2}</span></td>
    <td><span class=badge>${p.w1} · W1</span><span class=badge>${p.w2} · W2</span></td>
    <td><details><summary>${av.length} teams remaining</summary><div class=avail>${av.join(" · ")}</div></details></td>
-   <td><details><summary>View</summary><div class=avail>W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — score pending</div></details></td></tr>`}).join("");
+   <td><details><summary>View</summary><div class=avail>W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${w2display}</div></details></td></tr>`}).join("");
  let counts={}; players.forEach(p=>counts[p.w2]=(counts[p.w2]||0)+1);
  document.getElementById("pop").innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${t}</b> ${n}</span>`).join("");
 } render();
