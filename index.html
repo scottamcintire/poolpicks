@@ -16,7 +16,11 @@ details summary{cursor:pointer;font-weight:700;color:var(--accent)}.weekbox{marg
 .note{color:var(--muted);font-size:12px;margin-top:14px}.pending{color:#b45309;font-size:12px;font-weight:700}
 @media(max-width:700px){.cards{grid-template-columns:1fr}header{padding:20px}main{padding:12px}}
 </style></head><body>
-<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker</p></header><main>
+<header><h1>Total Points Pool</h1>
+<p style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+<span>Season leaderboard • single-use team tracker</span>
+<span style="font-size:11px;color:#94a3b8">Last update: Sep 22, 2026 at 11:45 AM ET</span>
+</p></header><main>
 <div class="cards"><div class="card"><div class="label">Leader</div><div class="big" id="leader"></div></div>
 <div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div>
 <div class="card"><div class="label">Current Week</div><div class="big">Week 2</div><div class="pending">Week 2 complete • all selected-team scores final</div></div></div>
@@ -39,7 +43,7 @@ function render(){
    return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}${p.provisional?'*':''}</td>
    <td class=num>${lead-p.total===0?"—":"-"+(lead-p.total)}</td><td><span class="badge current">${p.w2}</span></td>
    <td><span class=badge>${p.w1} · W1</span><span class=badge>${p.w2} · W2</span></td>
-   <td><details><summary>${av.length} teams remaining</summary><div class=avail>${av.join(" · ")}</div></details></td>
+   <td><details><summary>Teams remaining</summary><div class=avail>${av.join(" · ")}</div></details></td>
    <td><details><summary>View</summary><div class=avail>W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${w2display}</div></details></td></tr>`}).join("");
  let counts={}; players.forEach(p=>counts[p.w2]=(counts[p.w2]||0)+1);
  document.getElementById("pop").innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${t}</b> ${n}</span>`).join("");
