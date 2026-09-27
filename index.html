@@ -6,6 +6,11 @@
 header{padding:24px 4%;background:var(--ink);color:white}h1{margin:0;font-size:28px}header p{margin:6px 0 0;color:#cbd5e1}
 main{padding:20px 3%;max-width:1500px;margin:auto}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
 .card{background:white;border:1px solid var(--line);border-radius:12px;padding:15px}.label{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:700}.big{font-size:23px;font-weight:800;margin-top:4px}
+.featured-picks{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.pick-card{background:white;border:1px solid var(--line);border-radius:12px;padding:15px}
+.pick-name{font-size:18px;font-weight:800;margin-bottom:8px}
+.pick-history{display:flex;flex-wrap:wrap;gap:7px}
+.pick-history span{background:#eef2ff;border-radius:9px;padding:8px 10px;font-size:13px;font-weight:650}
 .tablewrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:1050px}
 th{font-size:12px;text-transform:uppercase;color:#475569;background:#f1f5f9;text-align:left;padding:12px;position:sticky;top:0}
 td{padding:12px;border-top:1px solid var(--line);vertical-align:top}.rank{font-weight:800;text-align:center}.name{font-weight:750}.num{font-weight:800;text-align:center}
@@ -14,38 +19,46 @@ td{padding:12px;border-top:1px solid var(--line);vertical-align:top}.rank{font-w
 details summary{cursor:pointer;font-weight:700;color:var(--accent)}.weekbox{margin-top:16px;background:white;border:1px solid var(--line);border-radius:12px;padding:15px}
 .pop{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.pop span{background:#eef2ff;border-radius:9px;padding:8px 10px;font-size:13px}
 .note{color:var(--muted);font-size:12px;margin-top:14px}.pending{color:#b45309;font-size:12px;font-weight:700}
-@media(max-width:700px){.cards{grid-template-columns:1fr}header{padding:20px}main{padding:12px}}
+@media(max-width:700px){.cards,.featured-picks{grid-template-columns:1fr}header{padding:20px}main{padding:12px}}
 </style></head><body>
-<header><h1>Total Points Pool</h1>
-<p style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
-<span>Season leaderboard • single-use team tracker</span>
-<span style="font-size:11px;color:#94a3b8">Last update: Sep 22, 2026 at 11:45 AM ET</span>
-</p></header><main>
+<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker</p></header><main>
+<div class="featured-picks">
+  <div class="pick-card">
+    <div class="label">Brett's Picks to Date</div>
+    <div class="pick-name">B. McIntire</div>
+    <div class="pick-history"><span>Week 1 · Chargers</span><span>Week 2 · Bills</span><span>Week 3 · 49ers</span></div>
+  </div>
+  <div class="pick-card">
+    <div class="label">Scott's Picks to Date</div>
+    <div class="pick-name">S. McIntire</div>
+    <div class="pick-history"><span>Week 1 · Lions</span><span>Week 2 · 49ers</span><span>Week 3 · Bills</span></div>
+  </div>
+</div>
 <div class="cards"><div class="card"><div class="label">Leader</div><div class="big" id="leader"></div></div>
 <div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div>
-<div class="card"><div class="label">Current Week</div><div class="big">Week 2</div><div class="pending">Week 2 complete • all selected-team scores final</div></div></div>
+<div class="card"><div class="label">Current Week</div><div class="big">Week 3</div><div class="pending">Week 3 picks entered • scores pending</div></div></div>
 <div class="tablewrap"><table><thead><tr><th>Rank</th><th>Participant</th><th>Total Points</th><th>Behind</th><th>Current Pick</th><th>Teams Used</th><th>Teams Available</th><th>History</th></tr></thead><tbody id="body"></tbody></table></div>
-<div class="weekbox"><div class="label">Week 2 Pick Popularity</div><div class="pop" id="pop"></div></div>
-<p class="note">Week 2 is complete. Final selected-team scores: Bills 41, Cowboys 37, 49ers 35, Chiefs 33, Bears 3. Rankings now reflect complete Week 1 + Week 2 totals.</p>
+<div class="weekbox"><div class="label">Week 3 Pick Popularity</div><div class="pop" id="pop"></div></div>
+<p class="note">Week 3 picks entered. Chiefs: 13 • Bills: 4 • 49ers: 3. Week 3 point totals are pending.</p>
 </main><script>
-const players=[{"name": "Beshta", "w1": "Jaguars", "w2": "49ers", "w1pts": 34, "w2pts": 35}, {"name": "Guccione", "w1": "Jaguars", "w2": "49ers", "w1pts": 34, "w2pts": 35}, {"name": "DiSercina", "w1": "Jaguars", "w2": "Bills", "w1pts": 34, "w2pts": 41}, {"name": "Susi", "w1": "Bengals", "w2": "49ers", "w1pts": 33, "w2pts": 35}, {"name": "Boli", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "Rozynak", "w1": "Lions", "w2": "Bears", "w1pts": 31, "w2pts": 3}, {"name": "McGowon", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "Pooveked", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "Rollins", "w1": "Lions", "w2": "Bills", "w1pts": 31, "w2pts": 41}, {"name": "S. McIntire", "w1": "Lions", "w2": "49ers", "w1pts": 31, "w2pts": 35}, {"name": "Morrison", "w1": "Bucs", "w2": "Bills", "w1pts": 27, "w2pts": 41}, {"name": "O'Rourke", "w1": "Eagles", "w2": "49ers", "w1pts": 24, "w2pts": 35}, {"name": "Enright", "w1": "Cowboys", "w2": "Chiefs", "w1pts": 20, "w2pts": 33}, {"name": "Sandman", "w1": "Chargers", "w2": "49ers", "w1pts": 14, "w2pts": 35}, {"name": "Smith", "w1": "Chargers", "w2": "Bills", "w1pts": 14, "w2pts": 41}, {"name": "Domski", "w1": "Chargers", "w2": "49ers", "w1pts": 14, "w2pts": 35}, {"name": "Picardi", "w1": "Chargers", "w2": "Bills", "w1pts": 14, "w2pts": 41}, {"name": "B. McIntire", "w1": "Chargers", "w2": "Bills", "w1pts": 14, "w2pts": 41}, {"name": "Leonard", "w1": "Rams", "w2": "Bears", "w1pts": 7, "w2pts": 3}, {"name": "AI Pics", "w1": "Lions", "w2": "Cowboys", "w1pts": 31, "w2pts": 37}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
+const players=[{"name": "Beshta","w1": "Jaguars","w2": "49ers","w1pts": 34,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Guccione","w1": "Jaguars","w2": "49ers","w1pts": 34,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "DiSercina","w1": "Jaguars","w2": "Bills","w1pts": 34,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Susi","w1": "Bengals","w2": "49ers","w1pts": 33,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Boli","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Rozynak","w1": "Lions","w2": "Bears","w1pts": 31,"w2pts": 3,"w3": "Bills","w3pts": null},{"name": "McGowon","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Pooveked","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Rollins","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "49ers","w3pts": null},{"name": "S. McIntire","w1": "Lions","w2": "49ers","w1pts": 31,"w2pts": 35,"w3": "Bills","w3pts": null},{"name": "Morrison","w1": "Bucs","w2": "Bills","w1pts": 27,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "O'Rourke","w1": "Eagles","w2": "49ers","w1pts": 24,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Enright","w1": "Cowboys","w2": "Chiefs","w1pts": 20,"w2pts": null,"w3": "Bills","w3pts": null},{"name": "Sandman","w1": "Chargers","w2": "49ers","w1pts": 14,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Smith","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Domski","w1": "Chargers","w2": "49ers","w1pts": 14,"w2pts": 35,"w3": "Bills","w3pts": null},{"name": "Picardi","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "B. McIntire","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "49ers","w3pts": null},{"name": "Leonard","w1": "Rams","w2": "Bears","w1pts": 7,"w2pts": 3,"w3": "49ers","w3pts": null},{"name": "AI Pics","w1": "Lions","w2": "Cowboys","w1pts": 31,"w2pts": 37,"w3": "Chiefs","w3pts": null}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
 const esc=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;");
 function render(){
- players.forEach(p=>{p.total=p.w1pts+p.w2pts; p.provisional=false});
+ players.forEach(p=>{p.total=p.w1pts+(p.w2pts??0)+(p.w3pts??0); p.provisional=(p.w2pts==null || p.w3pts==null)});
  let sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name)), lead=sorted[0].total;
  document.getElementById("leader").textContent=sorted.filter(x=>x.total===lead).map(x=>x.name).join(", ");
  document.getElementById("leadpts").textContent=lead;
  let last=null,rank=0;
  document.getElementById("body").innerHTML=sorted.map((p,i)=>{
    if(p.total!==last){rank=i+1;last=p.total}
-   let used=[p.w1,p.w2], av=allTeams.filter(t=>!used.includes(t));
-   let w2display=p.w2pts==null?"pending":p.w2pts+" pts";
+   let used=[p.w1,p.w2,p.w3], av=allTeams.filter(t=>!used.includes(t));
+   let w2display=p.w2pts==null?"pending":p.w2pts+" pts"; let w3display=p.w3pts==null?"pending":p.w3pts+" pts";
    return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}${p.provisional?'*':''}</td>
-   <td class=num>${lead-p.total===0?"—":"-"+(lead-p.total)}</td><td><span class="badge current">${p.w2}</span></td>
-   <td><span class=badge>${p.w1} · W1</span><span class=badge>${p.w2} · W2</span></td>
-   <td><details><summary>Teams remaining</summary><div class=avail>${av.join(" · ")}</div></details></td>
-   <td><details><summary>View</summary><div class=avail>W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${w2display}</div></details></td></tr>`}).join("");
- let counts={}; players.forEach(p=>counts[p.w2]=(counts[p.w2]||0)+1);
+   <td class=num>${lead-p.total===0?"—":"-"+(lead-p.total)}</td><td><span class="badge current">${p.w3}</span></td>
+   <td><span class=badge>${p.w1} · W1</span><span class=badge>${p.w2} · W2</span><span class=badge>${p.w3} · W3</span></td>
+   <td><details><summary>${av.length} teams remaining</summary><div class=avail>${av.join(" · ")}</div></details></td>
+   <td><details><summary>View</summary><div class=avail>W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${w2display}<br>W3: ${p.w3} — ${w3display}</div></details></td></tr>`}).join("");
+ let counts={}; players.forEach(p=>counts[p.w3]=(counts[p.w3]||0)+1);
  document.getElementById("pop").innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${t}</b> ${n}</span>`).join("");
 } render();
 </script></body></html>
