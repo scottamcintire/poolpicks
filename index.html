@@ -21,30 +21,30 @@ details summary{cursor:pointer;font-weight:700;color:var(--accent)}.weekbox{marg
 .note{color:var(--muted);font-size:12px;margin-top:14px}.pending{color:#b45309;font-size:12px;font-weight:700}
 @media(max-width:700px){.cards,.featured-picks{grid-template-columns:1fr}header{padding:20px}main{padding:12px}}
 </style></head><body>
-<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker</p></header><main>
+<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker • Last update: Sep 27, 2026 5:21 PM ET</p></header><main>
 <div class="featured-picks">
   <div class="pick-card">
     <div class="label">Brett's Picks to Date</div>
     <div class="pick-name">B. McIntire</div>
-    <div class="pick-history"><span>Week 1 · Chargers</span><span>Week 2 · Bills</span><span>Week 3 · 49ers</span></div>
+    <div class="pick-history"><span>Week 1 · Chargers</span><span>Week 2 · Bills</span><span>Week 3 · 49ers (14 live)</span></div>
   </div>
   <div class="pick-card">
     <div class="label">Scott's Picks to Date</div>
     <div class="pick-name">S. McIntire</div>
-    <div class="pick-history"><span>Week 1 · Lions</span><span>Week 2 · 49ers</span><span>Week 3 · Bills</span></div>
+    <div class="pick-history"><span>Week 1 · Lions</span><span>Week 2 · 49ers</span><span>Week 3 · Bills (24 final)</span></div>
   </div>
 </div>
 <div class="cards"><div class="card"><div class="label">Leader</div><div class="big" id="leader"></div></div>
 <div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div>
-<div class="card"><div class="label">Current Week</div><div class="big">Week 3</div><div class="pending">Week 3 picks entered • scores pending</div></div></div>
+<div class="card"><div class="label">Current Week</div><div class="big">Week 3</div><div class="pending">Chiefs 24 final • Bills 24 final • 49ers 14 live</div></div></div>
 <div class="tablewrap"><table><thead><tr><th>Rank</th><th>Participant</th><th>Total Points</th><th>Behind</th><th>Current Pick</th><th>Teams Used</th><th>Teams Available</th><th>History</th></tr></thead><tbody id="body"></tbody></table></div>
 <div class="weekbox"><div class="label">Week 3 Pick Popularity</div><div class="pop" id="pop"></div></div>
-<p class="note">Week 3 picks entered. Chiefs: 13 • Bills: 4 • 49ers: 3. Week 3 point totals are pending.</p>
+<p class="note">Week 3 score update (5:21 PM ET): Chiefs 24 final, Bills 24 final, 49ers 14 live. Week 2 pending values were finalized: Chiefs 33 and Cowboys 37. An asterisk marks totals affected by the live 49ers game.</p>
 </main><script>
-const players=[{"name": "Beshta","w1": "Jaguars","w2": "49ers","w1pts": 34,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Guccione","w1": "Jaguars","w2": "49ers","w1pts": 34,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "DiSercina","w1": "Jaguars","w2": "Bills","w1pts": 34,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Susi","w1": "Bengals","w2": "49ers","w1pts": 33,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Boli","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Rozynak","w1": "Lions","w2": "Bears","w1pts": 31,"w2pts": 3,"w3": "Bills","w3pts": null},{"name": "McGowon","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Pooveked","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Rollins","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "49ers","w3pts": null},{"name": "S. McIntire","w1": "Lions","w2": "49ers","w1pts": 31,"w2pts": 35,"w3": "Bills","w3pts": null},{"name": "Morrison","w1": "Bucs","w2": "Bills","w1pts": 27,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "O'Rourke","w1": "Eagles","w2": "49ers","w1pts": 24,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Enright","w1": "Cowboys","w2": "Chiefs","w1pts": 20,"w2pts": null,"w3": "Bills","w3pts": null},{"name": "Sandman","w1": "Chargers","w2": "49ers","w1pts": 14,"w2pts": 35,"w3": "Chiefs","w3pts": null},{"name": "Smith","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "Domski","w1": "Chargers","w2": "49ers","w1pts": 14,"w2pts": 35,"w3": "Bills","w3pts": null},{"name": "Picardi","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "Chiefs","w3pts": null},{"name": "B. McIntire","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "49ers","w3pts": null},{"name": "Leonard","w1": "Rams","w2": "Bears","w1pts": 7,"w2pts": 3,"w3": "49ers","w3pts": null},{"name": "AI Pics","w1": "Lions","w2": "Cowboys","w1pts": 31,"w2pts": 37,"w3": "Chiefs","w3pts": null}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
+const players=[{"name": "Beshta","w1": "Jaguars","w2": "49ers","w1pts": 34,"w2pts": 35,"w3": "Chiefs","w3pts": 24},{"name": "Guccione","w1": "Jaguars","w2": "49ers","w1pts": 34,"w2pts": 35,"w3": "Chiefs","w3pts": 24},{"name": "DiSercina","w1": "Jaguars","w2": "Bills","w1pts": 34,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "Susi","w1": "Bengals","w2": "49ers","w1pts": 33,"w2pts": 35,"w3": "Chiefs","w3pts": 24},{"name": "Boli","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "Rozynak","w1": "Lions","w2": "Bears","w1pts": 31,"w2pts": 3,"w3": "Bills","w3pts": 24},{"name": "McGowon","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "Pooveked","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "Rollins","w1": "Lions","w2": "Bills","w1pts": 31,"w2pts": 41,"w3": "49ers","w3pts": 14},{"name": "S. McIntire","w1": "Lions","w2": "49ers","w1pts": 31,"w2pts": 35,"w3": "Bills","w3pts": 24},{"name": "Morrison","w1": "Bucs","w2": "Bills","w1pts": 27,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "O'Rourke","w1": "Eagles","w2": "49ers","w1pts": 24,"w2pts": 35,"w3": "Chiefs","w3pts": 24},{"name": "Enright","w1": "Cowboys","w2": "Chiefs","w1pts": 20,"w2pts": 33,"w3": "Bills","w3pts": 24},{"name": "Sandman","w1": "Chargers","w2": "49ers","w1pts": 14,"w2pts": 35,"w3": "Chiefs","w3pts": 24},{"name": "Smith","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "Domski","w1": "Chargers","w2": "49ers","w1pts": 14,"w2pts": 35,"w3": "Bills","w3pts": 24},{"name": "Picardi","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "Chiefs","w3pts": 24},{"name": "B. McIntire","w1": "Chargers","w2": "Bills","w1pts": 14,"w2pts": 41,"w3": "49ers","w3pts": 14},{"name": "Leonard","w1": "Rams","w2": "Bears","w1pts": 7,"w2pts": 3,"w3": "49ers","w3pts": 14},{"name": "AI Pics","w1": "Lions","w2": "Cowboys","w1pts": 31,"w2pts": 37,"w3": "Chiefs","w3pts": 24}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
 const esc=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;");
 function render(){
- players.forEach(p=>{p.total=p.w1pts+(p.w2pts??0)+(p.w3pts??0); p.provisional=(p.w2pts==null || p.w3pts==null)});
+ players.forEach(p=>{p.total=p.w1pts+(p.w2pts??0)+(p.w3pts??0); p.provisional=(p.w3==="49ers")});
  let sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name)), lead=sorted[0].total;
  document.getElementById("leader").textContent=sorted.filter(x=>x.total===lead).map(x=>x.name).join(", ");
  document.getElementById("leadpts").textContent=lead;
@@ -52,7 +52,7 @@ function render(){
  document.getElementById("body").innerHTML=sorted.map((p,i)=>{
    if(p.total!==last){rank=i+1;last=p.total}
    let used=[p.w1,p.w2,p.w3], av=allTeams.filter(t=>!used.includes(t));
-   let w2display=p.w2pts==null?"pending":p.w2pts+" pts"; let w3display=p.w3pts==null?"pending":p.w3pts+" pts";
+   let w2display=p.w2pts==null?"pending":p.w2pts+" pts"; let w3display=p.w3pts+" pts"+(p.w3==="49ers"?" (live)":"");
    return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}${p.provisional?'*':''}</td>
    <td class=num>${lead-p.total===0?"—":"-"+(lead-p.total)}</td><td><span class="badge current">${p.w3}</span></td>
    <td><span class=badge>${p.w1} · W1</span><span class=badge>${p.w2} · W2</span><span class=badge>${p.w3} · W3</span></td>
