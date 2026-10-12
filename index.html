@@ -18,49 +18,58 @@ td{padding:12px;border-top:1px solid var(--line);vertical-align:top}.rank{font-w
 .current{background:#ccfbf1;color:#115e59}.avail{font-size:12px;line-height:1.65;color:#475569;max-width:450px}
 details summary{cursor:pointer;font-weight:700;color:var(--accent)}.weekbox{margin-top:16px;background:white;border:1px solid var(--line);border-radius:12px;padding:15px}
 .pop{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.pop span{background:#eef2ff;border-radius:9px;padding:8px 10px;font-size:13px}
-.note{color:var(--muted);font-size:12px;margin-top:14px}.pending{color:#b45309;font-size:12px;font-weight:700}
+.note{color:var(--muted);font-size:12px;margin-top:14px;line-height:1.55}.pending{color:#b45309;font-size:12px;font-weight:700}
 @media(max-width:700px){.cards,.featured-picks{grid-template-columns:1fr}header{padding:20px}main{padding:12px}}
 </style></head><body>
-<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker • Last update: Oct 4, 2026 9:03 PM ET</p></header><main>
+<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker • Last update: Oct 11, 2026 8:25 PM ET · score snapshot: 7:06 PM ET</p></header><main>
 <div class="featured-picks">
   <div class="pick-card">
     <div class="label">Brett's Picks to Date</div>
     <div class="pick-name">B. McIntire</div>
-    <div class="pick-history"><span>Week 1 · Chargers</span><span>Week 2 · Bills</span><span>Week 3 · 49ers (36)</span><span>Week 4 · Texans (30 final)</span></div>
+    <div class="pick-history"><span>Week 1 · Chargers</span><span>Week 2 · Bills</span><span>Week 3 · 49ers (36)</span><span>Week 4 · Texans (30 final)</span><span>Week 5 · Lions (38 live*)</span></div>
   </div>
   <div class="pick-card">
     <div class="label">Scott's Picks to Date</div>
     <div class="pick-name">S. McIntire</div>
-    <div class="pick-history"><span>Week 1 · Lions</span><span>Week 2 · 49ers</span><span>Week 3 · Bills (24)</span><span>Week 4 · Chiefs (30 final)</span></div>
+    <div class="pick-history"><span>Week 1 · Lions</span><span>Week 2 · 49ers</span><span>Week 3 · Bills (24)</span><span>Week 4 · Chiefs (30 final)</span><span>Week 5 · Rams (Mon · pending)</span></div>
   </div>
 </div>
 <div class="cards"><div class="card"><div class="label">Leader</div><div class="big" id="leader"></div></div>
 <div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div>
-<div class="card"><div class="label">Current Week</div><div class="big">Week 4</div><div class="pending">Lions pending • all other listed Week 4 picks final</div></div></div>
+<div class="card"><div class="label">Current Week</div><div class="big">Week 5</div><div class="pending">Week 4 final · Brett: Lions live (38*) · Scott: Rams Monday · other Week 5 picks not provided</div></div></div>
 <div class="tablewrap"><table><thead><tr><th>Rank</th><th>Participant</th><th>Total Points</th><th>Behind</th><th>Current Pick</th><th>Teams Used</th><th>Teams Available</th><th>History</th></tr></thead><tbody id="body"></tbody></table></div>
-<div class="weekbox"><div class="label">Week 4 Pick Popularity</div><div class="pop" id="pop"></div></div>
-<p class="note">Week 4 update: Ravens 24, Packers 17, Bengals 17, Vikings 15, Texans 30, Chiefs 30, Jaguars 22, 49ers 24. Lions–Panthers is still pending, so Lions entries show their Week 3 total with an asterisk.</p>
+<div class="weekbox"><div class="label">Week 5 Known Pick Popularity</div><div class="pop" id="pop"></div></div>
+<p class="note">Week 4 is final (Lions 26). Week 5: Brett selected Lions (38 live at score snapshot); Scott selected Rams (Monday night, pending). Picks for the other participants have not been supplied, so their totals reflect Weeks 1–4 only, and no Week 5 team is deducted from their available-team lists. *All Week 5 standings are provisional. NFL score source: <a href="https://plaintextsports.com/nfl/">Plain Text Sports</a>, retrieved Oct 11, 2026 (7:06 PM ET snapshot).</p>
 </main><script>
-const players=[{"name":"Rollins","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"49ers","w3pts":36,"through3":108,"w4":"Ravens","w4pts":24},{"name":"DiSercina","w1":"Jaguars","w2":"Bills","w1pts":34,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":99,"w4":"Packers","w4pts":17},{"name":"Boli","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24},{"name":"McGowon","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24},{"name":"Pooveked","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Bengals","w4pts":17},{"name":"Beshta","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15},{"name":"Guccione","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15},{"name":"Susi","w1":"Bengals","w2":"49ers","w1pts":33,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Vikings","w4pts":15},{"name":"Morrison","w1":"Bucs","w2":"Bills","w1pts":27,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Lions","w4pts":null},{"name":"B. McIntire","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"49ers","w3pts":36,"through3":91,"w4":"Texans","w4pts":30},{"name":"S. McIntire","w1":"Lions","w2":"49ers","w1pts":31,"w2pts":35,"w3":"Bills","w3pts":24,"through3":90,"w4":"Chiefs","w4pts":30},{"name":"O'Rourke","w1":"Eagles","w2":"49ers","w1pts":24,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":83,"w4":"Lions","w4pts":null},{"name":"Picardi","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Vikings","w4pts":15},{"name":"Smith","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Lions","w4pts":null},{"name":"Enright","w1":"Cowboys","w2":"Chiefs","w1pts":20,"w2pts":33,"w3":"Bills","w3pts":24,"through3":77,"w4":"Jaguars","w4pts":22},{"name":"Domski","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Bills","w3pts":24,"through3":73,"w4":"Lions","w4pts":null},{"name":"Sandman","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":73,"w4":"Vikings","w4pts":15},{"name":"Rozynak","w1":"Lions","w2":"Bears","w1pts":31,"w2pts":3,"w3":"Bills","w3pts":24,"through3":58,"w4":"49ers","w4pts":24},{"name":"Leonard","w1":"Rams","w2":"Bears","w1pts":7,"w2pts":3,"w3":"49ers","w3pts":36,"through3":46,"w4":"Lions","w4pts":null}], allTeams=["49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Bucs", "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys", "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions", "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints", "Seahawks", "Steelers", "Texans", "Titans", "Vikings"];
+const players=[{"name":"Rollins","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"49ers","w3pts":36,"through3":108,"w4":"Ravens","w4pts":24,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"DiSercina","w1":"Jaguars","w2":"Bills","w1pts":34,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":99,"w4":"Packers","w4pts":17,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Boli","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"McGowon","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Pooveked","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Bengals","w4pts":17,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Beshta","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Guccione","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Susi","w1":"Bengals","w2":"49ers","w1pts":33,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Vikings","w4pts":15,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Morrison","w1":"Bucs","w2":"Bills","w1pts":27,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Lions","w4pts":26,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"B. McIntire","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"49ers","w3pts":36,"through3":91,"w4":"Texans","w4pts":30,"w5":"Lions","w5pts":38,"w5status":"Live · Q4 6:39 remaining (score snapshot 7:06 PM ET)"},{"name":"S. McIntire","w1":"Lions","w2":"49ers","w1pts":31,"w2pts":35,"w3":"Bills","w3pts":24,"through3":90,"w4":"Chiefs","w4pts":30,"w5":"Rams","w5pts":null,"w5status":"Not played · Monday night"},{"name":"O'Rourke","w1":"Eagles","w2":"49ers","w1pts":24,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":83,"w4":"Lions","w4pts":26,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Picardi","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Vikings","w4pts":15,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Smith","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Lions","w4pts":26,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Enright","w1":"Cowboys","w2":"Chiefs","w1pts":20,"w2pts":33,"w3":"Bills","w3pts":24,"through3":77,"w4":"Jaguars","w4pts":22,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Domski","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Bills","w3pts":24,"through3":73,"w4":"Lions","w4pts":26,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Sandman","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":73,"w4":"Vikings","w4pts":15,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Rozynak","w1":"Lions","w2":"Bears","w1pts":31,"w2pts":3,"w3":"Bills","w3pts":24,"through3":58,"w4":"49ers","w4pts":24,"w5":null,"w5pts":null,"w5status":"Pick not provided"},{"name":"Leonard","w1":"Rams","w2":"Bears","w1pts":7,"w2pts":3,"w3":"49ers","w3pts":36,"through3":46,"w4":"Lions","w4pts":26,"w5":null,"w5pts":null,"w5status":"Pick not provided"}], allTeams=["49ers","Bears","Bengals","Bills","Broncos","Browns","Bucs","Cardinals","Chargers","Chiefs","Colts","Commanders","Cowboys","Dolphins","Eagles","Falcons","Giants","Jaguars","Jets","Lions","Packers","Panthers","Patriots","Raiders","Rams","Ravens","Saints","Seahawks","Steelers","Texans","Titans","Vikings"];
 const esc=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;");
 function render(){
- players.forEach(p=>{p.total=p.through3+(p.w4pts??0); p.provisional=p.w4pts==null});
- let sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name)), lead=Math.max(...sorted.filter(x=>!x.provisional).map(x=>x.total));
- let leaders=sorted.filter(x=>!x.provisional && x.total===lead);
- document.getElementById("leader").textContent=leaders.map(x=>x.name).join(", ");
- document.getElementById("leadpts").textContent=lead;
- let last=null,rank=0;
- document.getElementById("body").innerHTML=sorted.map((p,i)=>{
-   if(p.total!==last){rank=i+1;last=p.total}
-   let used=[p.w1,p.w2,p.w3,p.w4], av=allTeams.filter(t=>!used.includes(t));
-   let w4display=p.w4pts==null?"pending":p.w4pts+" pts";
-   return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}${p.provisional?'*':''}</td>
-   <td class=num>${p.provisional?"pending":(lead-p.total===0?"—":(lead-p.total>0?"-"+(lead-p.total):"+"+(p.total-lead)))}</td>
-   <td><span class="badge current">${p.w4}${p.w4pts==null?' · pending':''}</span></td>
-   <td><span class=badge>${p.w1} · W1</span><span class=badge>${p.w2} · W2</span><span class=badge>${p.w3} · W3</span><span class=badge>${p.w4} · W4</span></td>
-   <td><details><summary>${av.length} teams remaining</summary><div class=avail>${av.join(" · ")}</div></details></td>
-   <td><details><summary>View</summary><div class=avail>W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${p.w2pts} pts<br>W3: ${p.w3} — ${p.w3pts} pts<br>W4: ${p.w4} — ${w4display}</div></details></td></tr>`}).join("");
- let counts={}; players.forEach(p=>counts[p.w4]=(counts[p.w4]||0)+1);
- document.getElementById("pop").innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${t}</b> ${n}</span>`).join("");
+  players.forEach(p=>{
+    p.through4=p.through3+p.w4pts;
+    p.total=p.through4+(p.w5pts??0);
+    p.provisional=true;
+  });
+  let sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
+  let lead=Math.max(...sorted.map(p=>p.total));
+  let leaders=sorted.filter(x=>x.total===lead);
+  document.getElementById('leader').textContent=leaders.map(x=>x.name).join(', ')+' *';
+  document.getElementById('leadpts').textContent=lead+' *';
+  let last=null,rank=0;
+  document.getElementById('body').innerHTML=sorted.map((p,i)=>{
+    if(p.total!==last){rank=i+1;last=p.total}
+    let used=[p.w1,p.w2,p.w3,p.w4,...(p.w5?[p.w5]:[])];
+    let av=allTeams.filter(t=>!used.includes(t));
+    let status=p.w5 ? (p.w5pts===null?'pending':p.w5pts+' live pts'):'pick not reported';
+    let badge=p.w5?`${p.w5} · ${status}`:'Week 5 pick not reported';
+    let hist=`W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${p.w2pts} pts<br>W3: ${p.w3} — ${p.w3pts} pts<br>W4: ${p.w4} — ${p.w4pts} pts (final)<br>W5: ${p.w5??'Not reported'} — ${p.w5?status:'—'}`;
+    return `<tr><td class=rank>${rank}*</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}*</td>
+      <td class=num>${lead-p.total===0?'—':'-'+(lead-p.total)}*</td>
+      <td><span class="badge ${p.w5?'current':''}">${badge}</span></td>
+      <td>${used.map((team,i)=>`<span class=badge>${team} · W${i+1}</span>`).join('')}</td>
+      <td><details><summary>Teams remaining (${av.length}${!p.w5?', W5 unreported':''})</summary><div class=avail>${av.join(' · ')}</div></details></td>
+      <td><details><summary>View</summary><div class=avail>${hist}</div></details></td></tr>`;
+  }).join('');
+  let counts={}; players.filter(p=>p.w5).forEach(p=>counts[p.w5]=(counts[p.w5]||0)+1);
+  document.getElementById('pop').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${t}</b> ${n}</span>`).join('')+'<span>17 participants: pick not reported</span>';
 } render();
 </script></body></html>
