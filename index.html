@@ -1,6 +1,6 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Total Points Pool Leaderboard</title>
-<style>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Total Points Pool — Week 7 Final</title><style>
 :root{--ink:#14213d;--muted:#64748b;--line:#e2e8f0;--bg:#f6f8fb;--card:#fff;--accent:#0f766e}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#172033}
 header{padding:24px 4%;background:var(--ink);color:white}h1{margin:0;font-size:28px}header p{margin:6px 0 0;color:#cbd5e1}
@@ -20,58 +20,44 @@ details summary{cursor:pointer;font-weight:700;color:var(--accent)}.weekbox{marg
 .pop{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.pop span{background:#eef2ff;border-radius:9px;padding:8px 10px;font-size:13px}
 .note{color:var(--muted);font-size:12px;margin-top:14px;line-height:1.55}.pending{color:#b45309;font-size:12px;font-weight:700}
 @media(max-width:700px){.cards,.featured-picks{grid-template-columns:1fr}header{padding:20px}main{padding:12px}}
+
+.summary-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:13px 15px;margin:12px 0 17px;color:#7c2d12;font-size:13px;line-height:1.5}
+.highlight td{background:#f0fdfa}.pick-history span:last-child{background:#ccfbf1}.breakdown{font-size:13px;line-height:1.8}.totalbold{font-weight:800}
 </style></head><body>
-<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker • Last updated: Oct 23, 2026 · Week 6 final</p></header><main>
+<header><h1>Total Points Pool</h1><p>Season leaderboard • single-use team tracker • Updated Oct 29, 2026 · Standings through Week 7</p></header>
+<main>
 <div class="featured-picks">
-  <div class="pick-card">
-    <div class="label">Brett's Picks to Date</div>
-    <div class="pick-name">B. McIntire</div>
-    <div class="pick-history"><span>Week 1 · Chargers</span><span>Week 2 · Bills</span><span>Week 3 · 49ers (36)</span><span>Week 4 · Texans (30 final)</span><span>Week 5 · Lions (45 final)</span><span>Week 6 · Packers (23 final)</span></div>
-  </div>
-  <div class="pick-card">
-    <div class="label">Scott's Picks to Date</div>
-    <div class="pick-name">S. McIntire</div>
-    <div class="pick-history"><span>Week 1 · Lions</span><span>Week 2 · 49ers</span><span>Week 3 · Bills (24)</span><span>Week 4 · Chiefs (30 final)</span><span>Week 5 · Rams (34 final)</span><span>Week 6 · Packers (23 final)</span></div>
-  </div>
+<div class="pick-card"><div class="label">Brett's Picks to Date</div><div class="pick-name">B. McIntire</div><div class="pick-history" id="brettHistory"></div></div>
+<div class="pick-card"><div class="label">Scott's Picks to Date</div><div class="pick-name">S. McIntire</div><div class="pick-history" id="scottHistory"></div></div>
 </div>
-<div class="cards"><div class="card"><div class="label">Leader</div><div class="big" id="leader"></div></div>
-<div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div>
-<div class="card"><div class="label">Current Week</div><div class="big">Week 6</div><div class="note">Week 6 final · Brett: Packers 23 · Scott: Packers 23 · all 19 Week 6 picks finalized</div></div></div>
-<div class="tablewrap"><table><thead><tr><th>Rank</th><th>Participant</th><th>Total Points</th><th>Behind</th><th>Current Pick</th><th>Teams Used</th><th>Teams Available</th><th>History</th></tr></thead><tbody id="body"></tbody></table></div>
-<div class="weekbox"><div class="label">Week 6 Pick Popularity</div><div class="pop" id="pop"></div></div>
-<div class="weekbox"><div class="label">Week 6 Pool Results · Final</div><div class="pop" id="week6scores"></div><p class="note">Week 6 point values calculated from the difference between the Week 5 and Week 6 handwritten standings. All 19 selections accounted for.</p></div>
-<p class="note">Week 6 standings and picks transcribed from the supplied handwritten sheets. Weeks 1–5 team histories preserved. Every Week 6 pick counts as used, and is excluded from that participant’s available teams.</p>
+<div class="cards"><div class="card"><div class="label">Leaders</div><div class="big" id="leader"></div></div><div class="card"><div class="label">Leader's Points</div><div class="big" id="leadpts"></div></div><div class="card"><div class="label">Current Standings</div><div class="big">Week 7 final</div><div class="note">All 19 reported Week 7 selections included.</div></div></div>
+<div class="summary-note"><strong>Week 6 team-history limitation:</strong> Both McIntires' Week 6 Packers selections are recorded. Other Week 6 team names weren't included in the supplied data, although their Week 6 point totals are accounted for. Until those teams are supplied, the “teams remaining” lists are provisional and may include one team already used in Week 6.</div>
+<div class="tablewrap"><table><thead><tr><th>Rank</th><th>Participant</th><th>Total Points</th><th>Behind</th><th>Week 7 Pick</th><th>Teams Used (Known)</th><th>Teams Available*</th><th>History</th></tr></thead><tbody id="body"></tbody></table></div>
+<div class="weekbox"><div class="label">Week 7 Pick Popularity</div><div class="pop" id="pop"></div></div>
+<div class="weekbox"><div class="label">Week 7 Team Points (from submitted standings)</div><div class="pop" id="scores"></div><p class="note">Point values are calculated as Week 7 final cumulative points minus the pre–Week 7 cumulative totals shown on your picks sheet.</p></div>
+<p class="note">Source: the two handwritten sheets supplied October 29, 2026. Week 1–5 picks come from the prior leaderboard. *Remaining-team lists are not fully validated until Week 6 picks are supplied.</p>
 </main><script>
-const players=[{"name":"Rollins","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"49ers","w3pts":36,"through3":108,"w4":"Ravens","w4pts":24,"w5":"Rams","w5pts":34,"w5status":"Final","w6":"Packers","w6pts":23,"w6status":"Final"},{"name":"DiSercina","w1":"Jaguars","w2":"Bills","w1pts":34,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":99,"w4":"Packers","w4pts":17,"w5":"Lions","w5pts":45,"w5status":"Final","w6":"49ers","w6pts":23,"w6status":"Final"},{"name":"Boli","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Chiefs","w6pts":22,"w6status":"Final"},{"name":"McGowon","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"49ers","w6pts":23,"w6status":"Final"},{"name":"Pooveked","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Bengals","w4pts":17,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Rams","w6pts":16,"w6status":"Final"},{"name":"Beshta","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Rams","w6pts":16,"w6status":"Final"},{"name":"Guccione","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15,"w5":"Colts","w5pts":22,"w5status":"Final","w6":"Rams","w6pts":16,"w6status":"Final"},{"name":"Susi","w1":"Bengals","w2":"49ers","w1pts":33,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Vikings","w4pts":15,"w5":"Lions","w5pts":45,"w5status":"Final","w6":"Rams","w6pts":16,"w6status":"Final"},{"name":"Morrison","w1":"Bucs","w2":"Bills","w1pts":27,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Lions","w4pts":26,"w5":"Cardinals","w5pts":21,"w5status":"Final","w6":"Rams","w6pts":16,"w6status":"Final"},{"name":"B. McIntire","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"49ers","w3pts":36,"through3":91,"w4":"Texans","w4pts":30,"w5":"Lions","w5pts":45,"w5status":"Final","w6":"Packers","w6pts":23,"w6status":"Final"},{"name":"S. McIntire","w1":"Lions","w2":"49ers","w1pts":31,"w2pts":35,"w3":"Bills","w3pts":24,"through3":90,"w4":"Chiefs","w4pts":30,"w5":"Rams","w5pts":34,"w5status":"Final","w6":"Packers","w6pts":23,"w6status":"Final"},{"name":"O'Rourke","w1":"Eagles","w2":"49ers","w1pts":24,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":83,"w4":"Lions","w4pts":26,"w5":"Rams","w5pts":34,"w5status":"Final","w6":"Ravens","w6pts":10,"w6status":"Final"},{"name":"Picardi","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Vikings","w4pts":15,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Patriots","w6pts":26,"w6status":"Final"},{"name":"Smith","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Lions","w4pts":26,"w5":"Bengals","w5pts":31,"w5status":"Final","w6":"Ravens","w6pts":10,"w6status":"Final"},{"name":"Enright","w1":"Cowboys","w2":"Chiefs","w1pts":20,"w2pts":33,"w3":"Bills","w3pts":24,"through3":77,"w4":"Jaguars","w4pts":22,"w5":"Rams","w5pts":34,"w5status":"Final","w6":"Packers","w6pts":23,"w6status":"Final"},{"name":"Domski","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Bills","w3pts":24,"through3":73,"w4":"Lions","w4pts":26,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Patriots","w6pts":26,"w6status":"Final"},{"name":"Sandman","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":73,"w4":"Vikings","w4pts":15,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Jaguars","w6pts":31,"w6status":"Final"},{"name":"Rozynak","w1":"Lions","w2":"Bears","w1pts":31,"w2pts":3,"w3":"Bills","w3pts":24,"through3":58,"w4":"49ers","w4pts":24,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6":"Panthers","w6pts":25,"w6status":"Final"},{"name":"Leonard","w1":"Rams","w2":"Bears","w1pts":7,"w2pts":3,"w3":"49ers","w3pts":36,"through3":46,"w4":"Lions","w4pts":26,"w5":"Texans","w5pts":26,"w5status":"Final","w6":"Giants","w6pts":27,"w6status":"Final"}], allTeams=["49ers","Bears","Bengals","Bills","Broncos","Browns","Bucs","Cardinals","Chargers","Chiefs","Colts","Commanders","Cowboys","Dolphins","Eagles","Falcons","Giants","Jaguars","Jets","Lions","Packers","Panthers","Patriots","Raiders","Rams","Ravens","Saints","Seahawks","Steelers","Texans","Titans","Vikings"];
-const esc=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;");
+const players=[{"name":"Rollins","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"49ers","w3pts":36,"through3":108,"w4":"Ravens","w4pts":24,"w5":"Rams","w5pts":34,"w5status":"Final","w6pts":23,"w6":null,"w7":"Texans","w7pts":21,"total":210},{"name":"DiSercina","w1":"Jaguars","w2":"Bills","w1pts":34,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":99,"w4":"Packers","w4pts":17,"w5":"Lions","w5pts":45,"w5status":"Final","w6pts":23,"w6":null,"w7":"Bengals","w7pts":35,"total":219},{"name":"Boli","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":22,"w6":null,"w7":"Packers","w7pts":17,"total":175},{"name":"McGowon","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Ravens","w4pts":24,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":23,"w6":null,"w7":"Texans","w7pts":21,"total":180},{"name":"Pooveked","w1":"Lions","w2":"Bills","w1pts":31,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":96,"w4":"Bengals","w4pts":17,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":16,"w6":null,"w7":"Texans","w7pts":21,"total":166},{"name":"Beshta","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":16,"w6":null,"w7":"Lions","w7pts":20,"total":160},{"name":"Guccione","w1":"Jaguars","w2":"49ers","w1pts":34,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":93,"w4":"Vikings","w4pts":15,"w5":"Colts","w5pts":22,"w5status":"Final","w6pts":16,"w6":null,"w7":"Texans","w7pts":21,"total":167},{"name":"Susi","w1":"Bengals","w2":"49ers","w1pts":33,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Vikings","w4pts":15,"w5":"Lions","w5pts":45,"w5status":"Final","w6pts":17,"w6":null,"w7":"Panthers","w7pts":12,"total":181},{"name":"Morrison","w1":"Bucs","w2":"Bills","w1pts":27,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":92,"w4":"Lions","w4pts":26,"w5":"Cardinals","w5pts":21,"w5status":"Final","w6pts":16,"w6":null,"w7":"Packers","w7pts":17,"total":172},{"name":"B. McIntire","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"49ers","w3pts":36,"through3":91,"w4":"Texans","w4pts":30,"w5":"Lions","w5pts":45,"w5status":"Final","w6pts":23,"w6":"Packers","w7":"Bears","w7pts":30,"total":219},{"name":"S. McIntire","w1":"Lions","w2":"49ers","w1pts":31,"w2pts":35,"w3":"Bills","w3pts":24,"through3":90,"w4":"Chiefs","w4pts":30,"w5":"Rams","w5pts":34,"w5status":"Final","w6pts":23,"w6":"Packers","w7":"Texans","w7pts":21,"total":198},{"name":"O'Rourke","w1":"Eagles","w2":"49ers","w1pts":24,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":83,"w4":"Lions","w4pts":26,"w5":"Rams","w5pts":34,"w5status":"Final","w6pts":10,"w6":null,"w7":"Vikings","w7pts":16,"total":169},{"name":"Picardi","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Vikings","w4pts":15,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":26,"w6":null,"w7":"49ers","w7pts":20,"total":156},{"name":"Smith","w1":"Chargers","w2":"Bills","w1pts":14,"w2pts":41,"w3":"Chiefs","w3pts":24,"through3":79,"w4":"Lions","w4pts":26,"w5":"Bengals","w5pts":31,"w5status":"Final","w6pts":10,"w6":null,"w7":"Giants","w7pts":27,"total":173},{"name":"Enright","w1":"Cowboys","w2":"Chiefs","w1pts":20,"w2pts":33,"w3":"Bills","w3pts":24,"through3":77,"w4":"Jaguars","w4pts":22,"w5":"Rams","w5pts":34,"w5status":"Final","w6pts":23,"w6":null,"w7":"Lions","w7pts":20,"total":176},{"name":"Domski","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Bills","w3pts":24,"through3":73,"w4":"Lions","w4pts":26,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":26,"w6":null,"w7":"Texans","w7pts":21,"total":162},{"name":"Sandman","w1":"Chargers","w2":"49ers","w1pts":14,"w2pts":35,"w3":"Chiefs","w3pts":24,"through3":73,"w4":"Vikings","w4pts":15,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":31,"w6":null,"w7":"Steelers","w7pts":16,"total":151},{"name":"Rozynak","w1":"Lions","w2":"Bears","w1pts":31,"w2pts":3,"w3":"Bills","w3pts":24,"through3":58,"w4":"49ers","w4pts":24,"w5":"Cowboys","w5pts":16,"w5status":"Final","w6pts":25,"w6":null,"w7":"Vikings","w7pts":16,"total":139},{"name":"Leonard","w1":"Rams","w2":"Bears","w1pts":7,"w2pts":3,"w3":"49ers","w3pts":36,"through3":46,"w4":"Lions","w4pts":26,"w5":"Texans","w5pts":26,"w5status":"Final","w6pts":27,"w6":null,"w7":"Packers","w7pts":17,"total":142}];
+const allTeams=["49ers","Bears","Bengals","Bills","Broncos","Browns","Bucs","Cardinals","Chargers","Chiefs","Colts","Commanders","Cowboys","Dolphins","Eagles","Falcons","Giants","Jaguars","Jets","Lions","Packers","Panthers","Patriots","Raiders","Rams","Ravens","Saints","Seahawks","Steelers","Texans","Titans","Vikings"];
+const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+function usedTeams(p){return [p.w1,p.w2,p.w3,p.w4,p.w5,p.w6,p.w7].filter(Boolean);}
+function history(p){return Array.from({length:7},(_,i)=>{let j=i+1,t=p['w'+j],pts=p['w'+j+'pts'];return `<span>W${j} · ${t?esc(t):'Team unconfirmed'} (${pts} pts)</span>`;}).join('');}
 function render(){
-  players.forEach(p=>{
-    p.through4=p.through3+p.w4pts;
-    p.total=p.through4+(p.w5pts??0)+(p.w6pts??0);
-    p.provisional=false;
-  });
-  let sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
-  let lead=Math.max(...sorted.map(p=>p.total));
-  let leaders=sorted.filter(x=>x.total===lead);
-  document.getElementById('leader').textContent=leaders.map(x=>x.name).join(', ');
-  document.getElementById('leadpts').textContent=lead;
-  let last=null,rank=0;
-  document.getElementById('body').innerHTML=sorted.map((p,i)=>{
-    if(p.total!==last){rank=i+1;last=p.total}
-    let used=[p.w1,p.w2,p.w3,p.w4,...(p.w5?[p.w5]:[]),...(p.w6?[p.w6]:[])];
-    let av=allTeams.filter(t=>!used.includes(t));
-    let status=p.w6 ? p.w6pts+' pts · final':'pick not reported';
-    let badge=p.w6?`${p.w6} · ${status}`:'Week 6 pick not reported';
-    let hist=`W1: ${p.w1} — ${p.w1pts} pts<br>W2: ${p.w2} — ${p.w2pts} pts<br>W3: ${p.w3} — ${p.w3pts} pts<br>W4: ${p.w4} — ${p.w4pts} pts (final)<br>W5: ${p.w5} — ${p.w5pts} pts (final)<br>W6: ${p.w6} — ${p.w6pts} pts (final)`;
-    return `<tr><td class=rank>${rank}</td><td class=name>${esc(p.name)}</td><td class=num>${p.total}</td>
-      <td class=num>${lead-p.total===0?'—':'-'+(lead-p.total)}</td>
-      <td><span class="badge ${p.w6?'current':''}">${badge}</span></td>
-      <td>${used.map((team,i)=>`<span class=badge>${team} · W${i+1}</span>`).join('')}</td>
-      <td><details><summary>Teams remaining (${av.length})</summary><div class=avail>${av.join(' · ')}</div></details></td>
-      <td><details><summary>View</summary><div class=avail>${hist}</div></details></td></tr>`;
-  }).join('');
-  let counts={}; players.filter(p=>p.w6).forEach(p=>counts[p.w6]=(counts[p.w6]||0)+1);
-  document.getElementById('pop').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${t}</b> ${n}</span>`).join('');
-  document.getElementById('week6scores').innerHTML=[...players].sort((a,b)=>b.w6pts-a.w6pts).map(p=>`<span>${esc(p.name)}: ${p.w6} ${p.w6pts}</span>`).join('');
-} render();
+const sorted=[...players].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
+const lead=sorted[0].total;
+document.getElementById('leader').textContent=sorted.filter(p=>p.total===lead).map(p=>p.name).join(' & ');
+document.getElementById('leadpts').textContent=lead;
+document.getElementById('brettHistory').innerHTML=history(players.find(p=>p.name==='B. McIntire'));
+document.getElementById('scottHistory').innerHTML=history(players.find(p=>p.name==='S. McIntire'));
+let rank=0,last=null;
+document.getElementById('body').innerHTML=sorted.map((p,i)=>{
+ if(p.total!==last){rank=i+1;last=p.total;}
+ const known=usedTeams(p),remaining=allTeams.filter(t=>!known.includes(t));
+ const hist=Array.from({length:7},(_,i)=>{let j=i+1,t=p['w'+j],pts=p['w'+j+'pts'];return `W${j}: ${t?esc(t):'Team not reported'} — ${pts} pts${j===6&&!t?' (team unknown)':''}`;}).join('<br>');
+ return `<tr class="${p.name.includes('McIntire')?'highlight':''}"><td class="rank">${rank}</td><td class="name">${esc(p.name)}</td><td class="num">${p.total}</td><td class="num">${lead===p.total?'—':'-'+(lead-p.total)}</td><td><span class="badge current">${esc(p.w7)} · ${p.w7pts} pts</span></td><td>${[1,2,3,4,5,6,7].map(j=>p['w'+j]?`<span class="badge ${j===7?'current':''}">${esc(p['w'+j])} · W${j}</span>`:`<span class="badge">W${j} team unconfirmed</span>`).join('')}</td><td><details><summary>${remaining.length} potentially remaining${!p.w6?'*':''}</summary><div class="avail">${remaining.join(' · ')}</div></details></td><td><details><summary>View</summary><div class="avail breakdown">${hist}</div></details></td></tr>`;
+}).join('');
+const counts={};const scores={};players.forEach(p=>{counts[p.w7]=(counts[p.w7]||0)+1;scores[p.w7]=p.w7pts;});
+document.getElementById('pop').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([t,n])=>`<span><b>${esc(t)}</b> ${n}</span>`).join('');
+document.getElementById('scores').innerHTML=Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span><b>${esc(t)}</b> ${n}</span>`).join('');
+}render();
 </script></body></html>
